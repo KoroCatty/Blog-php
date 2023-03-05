@@ -1,0 +1,25 @@
+ユーザー　サイトタイトル　template
+パス　
+
+サイトタイトル　template
+WordPress アドレス (URL)　　　　
+WordPress アドレス (URL)　　　　
+管理者メールアドレス　　　　　　
+
+//Make a minor change to resources/js/app.js and webpack will automatically recompile.
+
+    npx mix watch
+
+
+
+//Development
+// % npx mix
+
+// // Production
+//npm run production
+
+// // watch
+//  % npx mix watch
+
+// //Hot Module Replacemen
+//  % npx mix watch --hot

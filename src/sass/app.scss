@@ -1,0 +1,56 @@
+@use 'setting' as *;
+
+@use 'reset' as *;
+
+// Import all of Bootstrap's CSS
+@import "~bootstrap/scss/bootstrap";
+
+// ------------------------------------
+// ----- Write code from here ---------
+html{
+  scrollbar-width: none;
+}
+
+body {
+  // width: calc(100vw - calc(100vw - 100%)); //横スクロール防ぐ
+  background-color: $bg;
+
+
+  // @include mq(s) {
+  //   background-color: rgb(183, 183, 93);
+  // }
+  // @include mq(m) {
+  //   background-color: purple;
+  // }
+  // @include mq(l) {
+  //   background-color: rgb(133, 133, 133);
+  // }
+
+  // dist内のCSSからのパス
+  // background: url('./images/top_k_logo.png');
+}
+
+// =================================================
+// a {
+//   color: white !important;
+// }
+
+.categoryMain {
+  // min-height: 50px;
+  // background-color: red;
+
+  &__item {
+    // min-height: 50px;
+    // background-color: yellow;
+  }
+}
+
+.FieldInfo {
+  color: rgb(251, 174, 44);
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 1.2rem;
+}
+
+.mainAreaCat {
+  min-height: 70vh;
+}
