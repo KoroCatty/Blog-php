@@ -11,18 +11,62 @@ require_once("Includes/Sessions.php");
 ?>
 
 <?php
+// Validation
 // from name="Submit" ボタンから取得
 if (isset($_POST["Submit"])) {
-  $Category = $_POST["CategoryTitle"];
 
-  // if the empty form, redirect to Categories.php (エラーメッセはセッションに渡す)
+  $Category = $_POST["CategoryTitle"]; // フォームの値を格納
+
+  $Admin = "Kazuya";
+
+
+
+  // Functions.phpで作成した、現在時刻を取得する関数を格納
+  $getTime = getTime();
+
+
+  // エラー時
   if (empty($Category)) {
-    $_SESSION["ErrorMessage"] = "All fields must be filled out";
+    $_SESSION["ErrorMessage"] = "All fields must be filled out"; //エラーメッセをセッションに
+
+    // Functions.phpで定義しているので、ここで指定した先にリダイレクトできるようになる
     Redirect_to("Categories.php");
-  } 
+  } elseif (strlen($Category) < 3) { //strlen — 文字列の長さを得る
+    $_SESSION["ErrorMessage"] = "Title should be greater than 2 characters";
+    Redirect_to("Categories.php");
+  } elseif (strlen($Category) > 49) { //strlen — 文字列の長さを得る
+    $_SESSION["ErrorMessage"] = "Title should be less than 50 characters";
+    Redirect_to("Categories.php");
 
-  
+    // 成功時
+  } else {
+    // 上記のValidationをスルーしたのでDBに値を入れていく
+    $sql = "insert into category(title, author, datetime)";
 
+    // This is dummy (プレースホルダー。SQLインジェクション対策)
+    $sql = $sql . "values(:categoryName, :adminName, :dateTime)";
+
+    // connect.phpから取得した関数を格納
+    $ConnectingDB = dbConnect();
+
+    $stmt = $ConnectingDB->prepare($sql); // sql文は prepare()を通す必要がある
+
+    //  bindValueは,対応する名前あるいは疑問符のプレースホルダに値をバインドする
+    $stmt->bindValue(':categoryName', $Category); // 1.dummy, 2,実際の値
+    $stmt->bindValue(':adminName', $Admin); // 1.dummy, 2,実際の値
+    $stmt->bindValue('dateTime', $getTime); // 1.dummy, 2,実際の値
+
+    $Execute = $stmt->execute();
+
+    if($Execute) {
+      $_SESSION["SuccessMessage"] = "Category ADDED Successfully!!!!!!";
+      // Redirect_to("google.com");
+    } else {
+      $_SESSION["ErrorMessage"] = "Something went wrong!";
+      Redirect_to("Categories.php");
+    }
+
+  }
 }
 
 
@@ -114,10 +158,11 @@ if (isset($_POST["Submit"])) {
       <div class="offset-lg-1 col-lg-10 categoryMain__item">
 
 
-      <?php
-      echo ErrorMessage();
-      echo SuccessMessage(); 
-      ?>
+        <?php
+        // ここでフォーム送信時にどちらかを表示させる
+        echo ErrorMessage();
+        echo SuccessMessage();
+        ?>
         <form action="Categories.php" class="" method="post">
           <div class="card mb-3">
             <div class="card-header">
@@ -145,7 +190,7 @@ if (isset($_POST["Submit"])) {
                   <button class="btn btn-success btn-block" type="submit" name="Submit">
                     <i class="fas fa-check"></i>Publish
                   </button>
-                  
+
                 </div>
               </div>
             </div>
