@@ -22,7 +22,7 @@ if (isset($_POST["Submit"])) {
 
 
   // Functions.phpで作成した、現在時刻を取得する関数を格納
-  $getTime = getTime();
+  $DateTime = getTime();
 
 
   // エラー時
@@ -46,7 +46,7 @@ if (isset($_POST["Submit"])) {
     // This is dummy (プレースホルダー。SQLインジェクション対策)
     $sql = $sql . "values(:categoryName, :adminName, :dateTime)";
 
-    // connect.phpから取得した関数を格納
+    // connect.phpから取得した関数を格納 (sql文を実行する際に必要)
     $ConnectingDB = dbConnect();
 
     $stmt = $ConnectingDB->prepare($sql); // sql文は prepare()を通す必要がある
@@ -54,12 +54,18 @@ if (isset($_POST["Submit"])) {
     //  bindValueは,対応する名前あるいは疑問符のプレースホルダに値をバインドする
     $stmt->bindValue(':categoryName', $Category); // 1.dummy, 2,実際の値
     $stmt->bindValue(':adminName', $Admin); // 1.dummy, 2,実際の値
-    $stmt->bindValue('dateTime', $getTime); // 1.dummy, 2,実際の値
+    $stmt->bindValue('dateTime', $DateTime); // 1.dummy, 2,実際の値
 
+    // 実行するコードを格納
     $Execute = $stmt->execute();
 
+    // DBとやり取りするときはエラーが起きやすいのでIF文使用
     if($Execute) {
-      $_SESSION["SuccessMessage"] = "Category ADDED Successfully!!!!!!";
+      // 一番最後のIDを表示させる lastInsertID()関数をDBを通して実行
+      $_SESSION["SuccessMessage"] = "Category with id : ". $ConnectingDB->lastInsertID() . "ADDED Successfully!!!!!!";
+
+// echo SuccessMessage();
+
       // Redirect_to("google.com");
     } else {
       $_SESSION["ErrorMessage"] = "Something went wrong!";

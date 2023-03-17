@@ -26,8 +26,8 @@ return $Output; // この関数から欲しいものをreturnする
 // 成功時
 // =========================================================
 function SuccessMessage() {
-  if (isset( $_SESSION["SuccessMessage"] )) {
-    $Output = "<div class=\"alert alert-Success\"> ";
+  if (isset( $_SESSION["SuccessMessage"])) {
+    $Output = "<div class=\"alert alert-success\"> ";
 
     // it won't break HTML syntax
 $Output .= htmlentities($_SESSION["SuccessMessage"]);
