@@ -212,17 +212,17 @@ require_once("Includes/Sessions.php");
                 <td>Comments</td>
                 <td>
                   <!-- Edit button -->
-                  <a href="" class="">
+                  <a href="./EditPost.php?id=<?php echo htmlentities($Id); ?>" class="">
                     <span class="btn btn-warning">Edit</span>
                   </a>
 
                   <!-- Delete Button -->
-                  <a href="" class="">
+                  <a href="DeletePost.php?id=<?php echo htmlentities($Id); ?>" class="">
                     <span class="btn btn-danger">Delete</span>
                   </a>
                 </td>
                 <td>
-                  <a href=""><span class="btn btn-primary">Live Preview</span></a>
+                <a href="FullPost.php?id=<?php echo htmlentities($Id); ?>" target="_blank"><span class="btn btn-primary">Live Preview</span></a>
                 </td>
               </tr>
             </tbody>

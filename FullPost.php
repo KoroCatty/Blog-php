@@ -80,15 +80,8 @@ require_once("Includes/Sessions.php");
       <!-- Main Area Start -->
       <div class="col-sm-8" style="min-height: 40px; background: grey;">
         <h1>The Complete Responsive CMS Blog</h1>
-
         <!-- lead classは文字を小さくする -->
         <h1 class="lead">The Complete blog by using PHP by Kazuya</h1>
-
-        <?php 
-        // Session.phpから取得したエラーを表示する。ここでechoしとかないと、FullPost.phpで起こしたエラーが表示されない
-        echo ErrorMessage();
-        echo SuccessMessage();
-        ?>
 
         <!-- Fetch Posts From DB -->
         <?php
@@ -115,8 +108,16 @@ require_once("Includes/Sessions.php");
 
           $stmt->execute();
         } else {
-          // 新着順で表示
-          $sql = "select * from posts ORDER BY id desc";
+          // super global でブラウザバーのURLから値を取得し、//! 記事１ページのみ表示
+          $PostIdFromURL = $_GET["id"];
+
+          // ブラウザのURLバーに id= が入ってなかったら、セッションから取得したエラーを表示し一覧のBlog.phpに飛ばす
+          if (!isset($PostIdFromURL)) {
+            $_SESSION["ErrorMessage"] = "Bad Request !!"; // Blog.php内にエラーが表示される
+            Redirect_to("Blog.php");
+          }
+
+          $sql = "select * from posts where id = '$PostIdFromURL' ";
 
           // 指定したSQL文をデータベースに対して発行してくれる役割を持っています。
           // queryメソッドを使用して、sqlをデータベースに届けなければいけないのです。
@@ -149,15 +150,7 @@ require_once("Includes/Sessions.php");
 
               <hr />
               <p class="card-text">
-                <?php
-                // 文字制限をかける。　strlen()は文字のバイト数を返す
-                if (strlen($PostDescription) > 150) {
-
-                  // substr()は指定した所までを表示する
-                  $PostDescription = substr($PostDescription, 0, 150) . "...";
-                }
-                echo htmlentities( $PostDescription );
-                ?>
+                <?php echo htmlentities($PostDescription); ?>
               </p>
               <!-- DBからIdを取得し、そのIdをURLにくっつける -->
               <a class="postCardBtn" href="FullPost.php?id=<?php echo htmlentities($PostId); ?>">
