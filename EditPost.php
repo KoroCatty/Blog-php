@@ -8,6 +8,9 @@ require_once("Includes/Functions.php");
 
 // Sessions
 require_once("Includes/Sessions.php");
+
+// URL bar (id=  1 )などを取得
+$SearchQueryParameter = $_GET["id"];
 ?>
 
 <?php
@@ -44,55 +47,63 @@ if (isset($_POST["Submit"])) {
     $_SESSION["ErrorMessage"] = "Title can't be empty"; //エラーメッセをセッションに
 
     // Functions.phpで定義しているので、ここで指定した先にリダイレクトできるようになる
-    Redirect_to("AddNewPost.php");
-  } elseif (strlen($Category) > 5) { //strlen — 文字列の長さを得る
-    $_SESSION["ErrorMessage"] = "Post title should be greater than 5 characters";
-    Redirect_to("AddNewPost.php");
-  } elseif (strlen($PostText) > 999) { //strlen — 文字列の長さを得る
+    Redirect_to("EditPost.php?id=$SearchQueryParameter");
+  }
+  //  elseif (strlen($Category) > 5) { //strlen — 文字列の長さを得る
+  //   $_SESSION["ErrorMessage"] = "Post title should be greater than 5 characters";
+  //   Redirect_to("EditPost.php?id=$SearchQueryParameter");
+  // }
+  elseif (strlen($PostText) > 999) { //strlen — 文字列の長さを得る
     $_SESSION["ErrorMessage"] = "Post desc should be less than 1000 characters";
-    Redirect_to("AddNewPost.php");
+    Redirect_to("EditPost.php?id=$SearchQueryParameter");
 
     // 成功時
   } else {
-    // 上記のValidationをスルーしたのでDBのpostsテーブルに値を入れていく
-    $sql = "insert into posts(datetime, title, category, author, image, post)";
-
-    // This is dummy (プレースホルダー。SQLインジェクション対策)
-    $sql = $sql . "values(:dateTime, :postTitle, :categoryName, :adminName, :imageName, :postDescription)";
-
-    // var_dump($sql);
-
     // connect.phpから取得した関数を格納 (sql文を実行する際に必要)
+    // Query to Update Post in DB when everything is fine
     $ConnectingDB = dbConnect();
 
-    $stmt = $ConnectingDB->prepare($sql); // sql文は prepare()を通す必要がある
+    // さらに　image　のバリデーション
+    if (!empty($_FILES["Image"]["name"])) {
+      // 内容をアップデート
+      // 特定の記事をアップデートしたいので、ブラウザーのURLバーから id を受け取り、WHEREで、その記事を特定する
+      $sql = "UPDATE posts 
+    SET title = '$PostTitle', category = '$Category', image='$Image', post='$PostText' 
+    WHERE id='$SearchQueryParameter'
+    ";
 
-    //  bindValueは,対応する名前あるいは疑問符のプレースホルダに値をバインドする
-    $stmt->bindValue(':dateTime', $DateTime); // 1.dummy, 2,実際の値
-    $stmt->bindValue(':postTitle', $PostTitle); // 1.dummy, 2,実際の値
-    $stmt->bindValue(':categoryName', $Category); // 1.dummy, 2,実際の値
-    $stmt->bindValue(':adminName', $Admin); // 1.dummy, 2,実際の値
-    $stmt->bindValue(':imageName', $Image); // 1.dummy, 2,実際の値
-    $stmt->bindValue(':postDescription', $PostText); // 1.dummy, 2,実際の値
+      // image 失敗時
+    } else {
+      $sql = "UPDATE posts 
+    SET title = '$PostTitle', category = '$Category', post='$PostText' 
+    WHERE id='$SearchQueryParameter'
+    ";
+    }
 
-    // 実行するコードを格納
-    $Execute = $stmt->execute();
+
+
+
+
+    // 上で定義したSQL文を実行 (いつもDBに繋がないといけない)
+    $Execute = $ConnectingDB->query($sql);
+
 
     // 実際のimageをフォルダーに格納させる関数 (PHPはimgを tmp_name というフォルダに仮置きしてるので、それを自分で指定した先に持ってくる($Targetに) )
     move_uploaded_file($_FILES["Image"]["tmp_name"], $Target);
 
+    // var_dump($Execute); // Debugging
+
     // DBとやり取りするときはエラーが起きやすいのでIF文使用
     if ($Execute) {
       // 一番最後のIDを表示させる lastInsertID()関数をDBを通して実行
-      $_SESSION["SuccessMessage"] = "あなたのPost with id : " . $ConnectingDB->lastInsertID() . "ADDED Successfully!!!!!!";
+      $_SESSION["SuccessMessage"] = "あなたのPost with id : " . $ConnectingDB->lastInsertID() . "Updated Successfully!!!!!!";
 
       // echo SuccessMessage();
 
-      // Redirect_to("google.com");
-
+      Redirect_to("Posts.php");
     } else {
       $_SESSION["ErrorMessage"] = "Something went wrong!";
-      Redirect_to("AddNewPost.php");
+      Redirect_to("Posts.php");
     }
   }
 }
@@ -197,7 +208,7 @@ if (isset($_POST["Submit"])) {
         global $ConnectingDB;
 
         // Get URL parameter from URL Bar
-        $SearchQueryParameter = $_GET["id"];  // id=8 などを取得
+        // $SearchQueryParameter = $_GET["id"];  // id=8 などを取得
 
         // SQL文でデータをDBから取得
         $sql = "select * from posts where id = '$SearchQueryParameter' ";
@@ -214,7 +225,7 @@ if (isset($_POST["Submit"])) {
 
         <!-- enctype save the image to the folder wherever you want  -->
         <!-- enctype属性は、フォームの送信データのMIMEタイプを設定するための属性です。 属性値にMIMEタイプを示す文字列を指定することで、フォームのデータが送信される際に用いられるMIMEタイプを設定することができます。 -->
-        <form action="AddNewPost.php" class="" method="post" enctype="multipart/form-data">
+        <form action="EditPost.php?id=<?php echo htmlentities($SearchQueryParameter); ?>" class="" method="post" enctype="multipart/form-data">
           <div class="card mb-3">
 
             <div class="card-body bg-dark">
@@ -302,7 +313,7 @@ if (isset($_POST["Submit"])) {
                     </span>
                   </label>
 
-                <!-- DBにある現在の本文を表示 -->
+                  <!-- DBにある現在の本文を表示 -->
                   <textarea class="form-control" name="PostDescription" id="Post" cols="30" rows="10"><?php echo htmlentities($PostToBeUpdated); ?></textarea>
 
                 </div>
@@ -323,7 +334,7 @@ if (isset($_POST["Submit"])) {
                 <div class="col-lg-6 mb-2">
 
                   <button class="btn btn-success btn-block" type="submit" name="Submit">
-                    <i class="fas fa-check"></i>Publish
+                    <i class="fas fa-check"></i>Update
                   </button>
 
                 </div>
