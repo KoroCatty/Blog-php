@@ -60,18 +60,17 @@ if (isset($_POST["Submit"])) {
     $Execute = $stmt->execute();
 
     // DBとやり取りするときはエラーが起きやすいのでIF文使用
-    if($Execute) {
+    if ($Execute) {
       // 一番最後のIDを表示させる lastInsertID()関数をDBを通して実行
-      $_SESSION["SuccessMessage"] = "Category with id : ". $ConnectingDB->lastInsertID() . "ADDED Successfully!!!!!!";
+      $_SESSION["SuccessMessage"] = "Category with id : " . $ConnectingDB->lastInsertID() . "ADDED Successfully!!!!!!";
 
-// echo SuccessMessage();
+      // echo SuccessMessage();
 
       // Redirect_to("google.com");
     } else {
       $_SESSION["ErrorMessage"] = "Something went wrong!";
       Redirect_to("Categories.php");
     }
-
   }
 }
 

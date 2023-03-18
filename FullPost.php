@@ -8,7 +8,78 @@ require_once("Includes/Functions.php");
 
 // Sessions
 require_once("Includes/Sessions.php");
+
+// Get the parameter from Browser URL Bar
+$SearchQueryParameter = $_GET["id"];
 ?>
+
+
+<?php
+// from name="Submit" ボタンから取得し、このif文を発火
+if (isset($_POST["Submit"])) {
+
+  // 各フォームから取得
+  $Name = $_POST["CommenterName"]; // フォームの値を格納
+  $Email = $_POST["CommenterEmail"];
+  $Comment = $_POST["CommenterThoughts"];
+
+  // Functions.phpで作成した、現在時刻を取得する関数を格納
+  $DateTime = getTime();
+
+  // エラー時 (各フォームの空を許さない。どれか一つでも空ならエラー)
+  if (empty($Name) || empty($Email) || empty($Comment)) {
+    $_SESSION["ErrorMessage"] = "All fields must be filled out"; //エラーメッセをセッションに
+
+    // Functions.phpで定義しているので、ここで指定した先にリダイレクトできるようになる
+    Redirect_to("FullPost.php?id=$SearchQueryParameter"); // in order to stay on the same page
+
+  } elseif (strlen($Comment) > 500) { //strlen — 文字列の長さを得る
+    $_SESSION["ErrorMessage"] = "Comment should be less than 500 characters";
+    Redirect_to("FullPost.php?id=$SearchQueryParameter");
+
+    // 成功時
+    // Query to insert comment in DB when everything is fine
+  } else {
+    // 上記のValidationをスルーしたのでDBに値を入れていく
+    $sql = "insert into comments(datetime, name, email, comment)";
+
+    // This is dummy (プレースホルダー。SQLインジェクション対策)
+    $sql = $sql . "values(:datetime,:name,:email,:comment)";
+
+    // connect.phpから取得した関数を格納 (sql文を実行する際に必要)
+    $ConnectingDB = dbConnect();
+
+    $stmt = $ConnectingDB->prepare($sql); // sql文は prepare()を通す必要がある
+
+    //  bindValueは,対応する名前あるいは疑問符のプレースホルダに値をバインドする
+    $stmt->bindValue(':datetime', $DateTime); // 1.dummy, 2,実際の値
+    $stmt->bindValue(':name', $Name);
+    $stmt->bindValue(':email', $Email);
+    $stmt->bindValue(':comment', $Comment);
+
+    // var_dump($stmt); // Debugging
+
+    // 実行するコードを格納
+    $Execute = $stmt->execute();
+
+    // var_dump($Execute);
+
+    // DBとやり取りするときはエラーが起きやすいのでIF文使÷用
+    if ($Execute) {
+      //  成功時
+      $_SESSION["SuccessMessage"] = "Comment submitted successfully";
+      Redirect_to("FullPost.php?id=$SearchQueryParameter");
+      // 失敗時
+    } else {
+      $_SESSION["ErrorMessage"] = "Something went wrong!";
+      Redirect_to("FullPost.php?id=$SearchQueryParameter");
+    }
+  }
+}
+?>
+
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -82,8 +153,14 @@ require_once("Includes/Sessions.php");
         <h1>The Complete Responsive CMS Blog</h1>
         <!-- lead classは文字を小さくする -->
         <h1 class="lead">The Complete blog by using PHP by Kazuya</h1>
+        <?php
+        echo ErrorMessage();
+        echo SuccessMessage();
+        ?>
 
+        <!-- ------------------- -->
         <!-- Fetch Posts From DB -->
+        <!-- ------------------- -->
         <?php
         global $ConnectingDb;
 
@@ -161,11 +238,57 @@ require_once("Includes/Sessions.php");
         <?php endwhile; ?>
         <!-- Card End -->
 
+        <!-- ------------- -->
+        <!-- Comment Form  -->
+        <!-- ------------- -->
+        <div class="">
+          <form action="./FullPost.php?id=<?php echo htmlentities($SearchQueryParameter) ?>" method="post">
+            <div class="card mb-3">
+              <div class="card-header">
+                <h5 class="FieldInfo">Share your thought</h5>
+              </div>
+              <div class="card-body">
+
+                <!-- Name -->
+                <div class="form-group">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text"><i class="fas fa-user"></i></span>
+                    </div>
+                    <input name="CommenterName" placeholder="Your Name" type="text" class="form-control" value="">
+                  </div>
+                </div>
+
+                <!-- Email -->
+                <div class="form-group">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                    </div>
+                    <input name="CommenterEmail" placeholder="Your Email" type="email" class="form-control" value="">
+                  </div>
+                </div>
+
+                <!-- 本文 -->
+                <div class="form-group">
+                  <textarea name="CommenterThoughts" cols="30" rows="6" class="form-control"></textarea>
+                </div>
+
+                <!-- Submit button -->
+                <button class="btn btn-primary" name="Submit" type="submit">Submit</button>
+              </div>
+            </div>
+
+          </form>
+        </div>
+
+
+
       </div>
       <!-- Main Area End -->
 
       <!-- Side Area Start -->
-      <div class="col-sm-4" style="min-height: 40px; background: white;">
+      <div class="col-sm-4" style="min-height: 40px; background: green;">
 
       </div>
       <!-- Side Area End -->
