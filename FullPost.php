@@ -15,7 +15,7 @@ $SearchQueryParameter = $_GET["id"];
 
 
 <?php
-// from name="Submit" ボタンから取得し、このif文を発火
+// インプットタグの name="Submit" ボタンから取得し、送信されたらこのif文を発火
 if (isset($_POST["Submit"])) {
 
   // 各フォームから取得
@@ -40,11 +40,11 @@ if (isset($_POST["Submit"])) {
     // 成功時
     // Query to insert comment in DB when everything is fine
   } else {
-    // 上記のValidationをスルーしたのでDBに値を入れていく
-    $sql = "insert into comments(datetime, name, email, comment)";
+    // 上記のValidationをスルーしたのでDBに値を入れていく ( approvedby などはユーザーに入力されない所なので、sqlインジェクション対策のbindValueをしなくても良い。) post_idはpostsテーブルのPrimary keyと繋がっている
+    $sql = "insert into comments(datetime, name, email, comment, approvedby, status, post_id)";
 
     // This is dummy (プレースホルダー。SQLインジェクション対策)
-    $sql = $sql . "values(:datetime,:name,:email,:comment)";
+    $sql = $sql . "values(:datetime,:name,:email,:comment, 'Pending', 'OFF', :postIdFromURL)";
 
     // connect.phpから取得した関数を格納 (sql文を実行する際に必要)
     $ConnectingDB = dbConnect();
@@ -56,6 +56,7 @@ if (isset($_POST["Submit"])) {
     $stmt->bindValue(':name', $Name);
     $stmt->bindValue(':email', $Email);
     $stmt->bindValue(':comment', $Comment);
+    $stmt->bindValue(':postIdFromURL', $SearchQueryParameter); // URLのid番号に応じてここが変わる。 (1とか２とかが入る)
 
     // var_dump($stmt); // Debugging
 
@@ -68,7 +69,7 @@ if (isset($_POST["Submit"])) {
     if ($Execute) {
       //  成功時
       $_SESSION["SuccessMessage"] = "Comment submitted successfully";
-      Redirect_to("FullPost.php?id=$SearchQueryParameter");
+      Redirect_to("FullPost.php?id=$SearchQueryParameter"); // stay on the same page
       // 失敗時
     } else {
       $_SESSION["ErrorMessage"] = "Something went wrong!";
@@ -239,8 +240,41 @@ if (isset($_POST["Submit"])) {
         <!-- Card End -->
 
         <!-- ------------- -->
-        <!-- Comment Form  -->
+        <!-- Comment 　    -->
         <!-- ------------- -->
+        <!-- fetching existing Comment From DB -->
+        <span class="FieldInfo">Comments</span>
+        <br />
+        <br />
+        <?php
+        $sql = "select * from comments 
+        WHERE post_id = '$SearchQueryParameter' AND status = 'ON'"; // ONにコメントだけ表示
+
+        $stmt = $ConnectingDB->query($sql); // DB接続して取得
+        while ($DataRows = $stmt->fetch()) : // fetchでDBのカラムを取り出す(必要なカラムのみ)
+          $CommentDate = $DataRows['datetime'];
+          $CommenterName = $DataRows['name'];
+          $CommentContent = $DataRows['comment'];
+        
+        ?>
+
+        <!-- display comments that are extracted by DB -->
+        <div class="commentBlock media">
+          <img src="./src/img/Koro.jpg" alt="" class="commentImg d-block img-fluid align-self-center">
+          <div class="media-body ml-2">
+            <h3 class=""><?php echo htmlentities($CommenterName); ?></h3>
+            <p class="small"><?php echo htmlentities($CommentDate); ?></p>
+            <p class=""><?php echo htmlentities($CommentContent); ?></p>
+          </div>
+        </div>
+        <hr />
+<?php endwhile; ?>
+
+
+
+
+
+        <!-- Comment From -->
         <div class="">
           <form action="./FullPost.php?id=<?php echo htmlentities($SearchQueryParameter) ?>" method="post">
             <div class="card mb-3">
