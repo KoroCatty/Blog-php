@@ -45,6 +45,34 @@ function CheckUserNameExistsOrNot( $UserName ) {
   } else {
     return false;
   }
+}
 
 
+// Login.phpで使用する関数 (1 ならDBからデータを取得)
+function Login_Attempt($UserName, $Password) {
+  global $ConnectingDB;
+
+      // DBの中にusername & passwordが一致しているのがあれば 1 レコード 取得
+      $sql = "select * from admins 
+      WHERE username = :userName AND password = :passWord LIMIT 1";
+  
+      // this will use the method of prepare 
+      $stmt = $ConnectingDB->prepare($sql);
+  
+      // then bind
+      $stmt->bindValue(':userName', $UserName);
+      $stmt->bindValue(':passWord', $Password);
+      $stmt->execute();
+  
+       // PDOStatement->rowCount() — 直近の SQL ステートメントによって作用したDBの行数を返す // 行の数を返します。
+      $Result = $stmt->rowcount();  //  1 or any other number
+  
+      // TRUE
+      if ($Result == 1 ) {
+      return $Found_Account = $stmt->fetch();
+  
+      // False
+      } else {
+        return null;
+      }
 }

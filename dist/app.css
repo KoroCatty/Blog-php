@@ -11022,3 +11022,7 @@ body {
 .commentImg {
   width: 100px;
 }
+
+.loginBox {
+  min-height: 500px;
+}
