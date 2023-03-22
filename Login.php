@@ -8,21 +8,27 @@ require_once("Includes/Functions.php");
 
 // Sessions
 require_once("Includes/Sessions.php");
+
+// ログイン後このページに来ようとしたらリダイレクトする
+if(isset($_SESSION["UserId"])) {
+  Redirect_to("Dashboard.php");
+}
 ?>
+
 <?php
-// inputタグのsubmitボタンが押されたら発火
+// inputタグのsubmitボタンが押されたら発火し以下の全てのコードが実行
 if (isset($_POST["Submit"])) {
   $UserName = $_POST["Username"]; // inputのnameから取得
   $Password = $_POST["Password"];
 
-  // 一つでも空なら実行
+  // 一つでも空なら実行 (error)
   if (empty($UserName) || empty($Password)) {
     $_SESSION["ErrorMessage"] = "ALL fields must be filled out";
     Redirect_to("Login.php");
 
-    // 成功なのでDBとコネクト
+    // 成功なのでDBとコネクト(Success)
   } else {
-    // check username & password form DB and then 格納 (関数はFunctions.phpで定義)
+    // check username & password form DB and then 格納 (関数はFunctions.phpで定義) // ex) Eggman & aaaa が格納される
     $Found_Account = Login_Attempt($UserName, $Password);
 
     // もし null ではない、何かの値が入っていればTRUEとみなされて実行し、IF文の中では、sessionにadminsテーブルから取得してきた各カラムを入れる
@@ -31,11 +37,21 @@ if (isset($_POST["Submit"])) {
       // adminsテーブルのカラムを、左側のSESSIONの自由に設定した名前に格納
       $_SESSION["UserId"] = $Found_Account["id"];
       $_SESSION["UserName"] = $Found_Account["username"];
-      $_SESSION["Eggman"] = $Found_Account["adname"];
+      $_SESSION["AdminName"] = $Found_Account["adname"];  
 
-      // すぐ上で定義した、Eggmanの、adname を表示する
-      $_SESSION["SuccessMessage"] = "wellcome" . $_SESSION["Eggman"];
-      Redirect_to("Login.php");
+      // 各ページで設定したセッションをここで使用してるので、ログインしたらsessionが残っているページに飛ぶ
+      if ( isset($_SESSION["TrackingURL"])) {
+        Redirect_to($_SESSION["TrackingURL"]);
+
+        // sessionがなかったら、ここに飛ばす
+      } else {
+      Redirect_to("Dashboard.php");
+
+      }
+
+      // SESSIONを使い, すぐ上で定義した、Eggmanの、adname を表示する
+      // $_SESSION["SuccessMessage"] = "wellcome" . " " . $_SESSION["AdminName"];
+      // Redirect_to("Dashboard.php");
 
       // 1以外の数字なら失敗なのでこれが実行
     } else {
@@ -46,9 +62,9 @@ if (isset($_POST["Submit"])) {
 }
 ?>
 
+
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -95,6 +111,7 @@ if (isset($_POST["Submit"])) {
       <!-- offsetで真ん中に寄せる -->
       <div class="offset-sm-3 col-sm-6 col-sm-6">
 
+      <!-- セッションでエラー表示 -->
         <?php
         echo ErrorMessage();
         echo SuccessMessage();

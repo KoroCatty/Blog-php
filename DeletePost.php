@@ -9,6 +9,10 @@ require_once("Includes/Functions.php");
 // Sessions
 require_once("Includes/Sessions.php");
 
+
+// Functions.phpで設定した、ログインしてないと入れない様にする関数
+Confirm_Login();
+
 // URL bar (id=  1 )などを取得
 $SearchQueryParameter = $_GET["id"];
 ?>

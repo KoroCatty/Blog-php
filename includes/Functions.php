@@ -8,8 +8,9 @@ header("Location:". $New_Location); // go to this location
 exit;
 }
 
-
+// =======================================
 // 現在時刻を表示する関数を定義
+// =======================================
 function getTime() {
 // タイムゾーンの設定
 date_default_timezone_set("Asia/Tokyo");
@@ -23,7 +24,9 @@ $DateTime = date("F j, Y, g:i a");
 return $DateTime;
 }
 
+// =======================================
 // Admins.php で使用する関数を定義
+// =======================================
 function CheckUserNameExistsOrNot( $UserName ) {
   global $ConnectingDB;
 
@@ -47,28 +50,32 @@ function CheckUserNameExistsOrNot( $UserName ) {
   }
 }
 
-
+// =======================================
 // Login.phpで使用する関数 (1 ならDBからデータを取得)
+// =======================================
 function Login_Attempt($UserName, $Password) {
+
+  // 関数の中からグローバル変数にアクセスする時は定義しないといけない
   global $ConnectingDB;
 
-      // DBの中にusername & passwordが一致しているのがあれば 1 レコード 取得
+      // DBの中にusername & passwordが一致しているのがあれば username & password の 1 レコード 取得
       $sql = "select * from admins 
       WHERE username = :userName AND password = :passWord LIMIT 1";
   
       // this will use the method of prepare 
       $stmt = $ConnectingDB->prepare($sql);
   
-      // then bind
-      $stmt->bindValue(':userName', $UserName);
-      $stmt->bindValue(':passWord', $Password);
+      // then bind a value respectively
+      $stmt->bindValue(':userName', $UserName); // Eggman 
+      $stmt->bindValue(':passWord', $Password); // aaaa
       $stmt->execute();
-  
+
        // PDOStatement->rowCount() — 直近の SQL ステートメントによって作用したDBの行数を返す // 行の数を返します。
       $Result = $stmt->rowcount();  //  1 or any other number
   
-      // TRUE
+      // TRUE で１ならfetchを開始
       if ($Result == 1 ) {
+        // fetch the record (returning fetched data and 格納 to $Found_Account)
       return $Found_Account = $stmt->fetch();
   
       // False
@@ -76,3 +83,23 @@ function Login_Attempt($UserName, $Password) {
         return null;
       }
 }
+
+// =======================================
+// Logout function
+// =======================================
+// ログインしないと入れないページにこの関数を貼り付ける　（セッションのUserIDがない状態ではエラーを返す）
+function Confirm_Login() {
+  if (isset($_SESSION["UserId"])) {
+    return true;
+
+  } else {
+    $_SESSION["ErrorMessage"] = "Login Required";
+    Redirect_to("Login.php");
+  }
+}
+
+
+
+
+
+

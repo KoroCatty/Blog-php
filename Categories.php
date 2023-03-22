@@ -8,6 +8,13 @@ require_once("Includes/Functions.php");
 
 // Sessions
 require_once("Includes/Sessions.php");
+
+// 自分自身のページに飛ばすものを定義し、それをセッションに格納
+// 現在のスクリプトが実行されているサーバの IP アドレスを返すもの
+$_SESSION["TrackingURL"] = $_SERVER["PHP_SELF"];
+
+// Functions.phpで設定した、ログインしてないと入れない様にする関数
+Confirm_Login();
 ?>
 
 <?php
@@ -17,13 +24,12 @@ if (isset($_POST["Submit"])) {
 
   $Category = $_POST["CategoryTitle"]; // フォームの値を格納
 
-  $Admin = "Kazuya";
-
-
+  // $Admin = "Kazuya";
+  // Login.php で設定したセッションを使い、動的に名前を引き出して格納
+  $Admin = $_SESSION["UserName"];
 
   // Functions.phpで作成した、現在時刻を取得する関数を格納
   $DateTime = getTime();
-
 
   // エラー時
   if (empty($Category)) {
@@ -31,9 +37,11 @@ if (isset($_POST["Submit"])) {
 
     // Functions.phpで定義しているので、ここで指定した先にリダイレクトできるようになる
     Redirect_to("Categories.php");
+    
   } elseif (strlen($Category) < 3) { //strlen — 文字列の長さを得る
     $_SESSION["ErrorMessage"] = "Title should be greater than 2 characters";
     Redirect_to("Categories.php");
+
   } elseif (strlen($Category) > 49) { //strlen — 文字列の長さを得る
     $_SESSION["ErrorMessage"] = "Title should be less than 50 characters";
     Redirect_to("Categories.php");
@@ -62,7 +70,7 @@ if (isset($_POST["Submit"])) {
     // DBとやり取りするときはエラーが起きやすいのでIF文使用
     if ($Execute) {
       // 一番最後のIDを表示させる lastInsertID()関数をDBを通して実行
-      $_SESSION["SuccessMessage"] = "Category with id : " . $ConnectingDB->lastInsertID() . "ADDED Successfully!!!!!!";
+      $_SESSION["SuccessMessage"] = "Category with  : " . $ConnectingDB->lastInsertID() . "ADDED Successfully!!!!!!";
 
       // echo SuccessMessage();
 

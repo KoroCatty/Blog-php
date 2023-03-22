@@ -8,6 +8,13 @@ require_once("Includes/Functions.php");
 
 // Sessions
 require_once("Includes/Sessions.php");
+
+// 自分自身のページに飛ばすものを定義し、それをセッションに格納
+// 現在のスクリプトが実行されているサーバの IP アドレスを返すもの
+$_SESSION["TrackingURL"] = $_SERVER["PHP_SELF"];
+
+// Functions.phpで設定した、ログインしてないと入れない様にする関数
+Confirm_Login();
 ?>
 
 <?php
@@ -19,7 +26,8 @@ if (isset($_POST["Submit"])) {
   $Password = $_POST["Password"]; // フォームの値を格納
   $ConfirmPassword = $_POST["ConfirmPassword"]; // フォームの値を格納
 
-  $Admin = "Kazuya";
+    // Login.php で設定したセッションを使い、動的に名前を引き出して格納
+    $Admin = $_SESSION["UserName"];
 
   // Functions.phpで作成した、現在時刻を取得する関数を格納
   $DateTime = getTime();
