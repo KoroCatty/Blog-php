@@ -9,7 +9,7 @@ require_once("Includes/Functions.php");
 // Sessions
 require_once("Includes/Sessions.php");
 
-// ログイン後このページに来ようとしたらリダイレクトする
+// ログイン後このページに来ようとしたらリダイレクトする (Loginページに来れるのはおかしいので)
 if(isset($_SESSION["UserId"])) {
   Redirect_to("Dashboard.php");
 }
