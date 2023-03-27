@@ -55,13 +55,13 @@ Confirm_Login();
             <a href="Posts.php" class="nav-link">Dashboard</a>
           </li>
           <li class="nav-item">
-            <a href="Categories.php" class="nav-link">Posts</a>
+            <a href="Posts.php" class="nav-link">Posts</a>
           </li>
           <li class="nav-item">
-            <a href="Admins.php" class="nav-link">Categories</a>
+            <a href="Categories.php" class="nav-link">Categories</a>
           </li>
           <li class="nav-item">
-            <a href="" class="nav-link">Manage Admins</a>
+            <a href="Admins.php" class="nav-link">Manage Admins</a>
           </li>
           <li class="nav-item">
             <a href="Comments.php" class="nav-link">Comments</a>

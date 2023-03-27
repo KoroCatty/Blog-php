@@ -37,11 +37,9 @@ if (isset($_POST["Submit"])) {
 
     // Functions.phpで定義しているので、ここで指定した先にリダイレクトできるようになる
     Redirect_to("Categories.php");
-    
   } elseif (strlen($Category) < 3) { //strlen — 文字列の長さを得る
     $_SESSION["ErrorMessage"] = "Title should be greater than 2 characters";
     Redirect_to("Categories.php");
-
   } elseif (strlen($Category) > 49) { //strlen — 文字列の長さを得る
     $_SESSION["ErrorMessage"] = "Title should be less than 50 characters";
     Redirect_to("Categories.php");
@@ -210,6 +208,68 @@ if (isset($_POST["Submit"])) {
 
           </div>
         </form>
+
+
+        <!--  -->
+        <!-- Existing Categories -->
+        <!--  -->
+        <h2>Existing Categories</h2>
+        <table class="table table-striped table-hover">
+          <thead class="thead-dark">
+            <tr>
+              <th>No. </th>
+              <th>Date&Time</th>
+              <th>Category Name</th>
+              <th>Creator Name</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+
+
+
+          <?php
+          // 関数内からグローバル変数にアクセスする際に必要
+          global $ConnectingDB;
+
+          // statusが OFFのやつのみ を最新順で取得する
+          $sql = "select * from category  ORDER BY id desc ";
+          $Execute = $ConnectingDB->query($sql);
+
+          // HTMLに表示した時に番号を振り付ける　ex) 1 2 3 4 5 
+          $SrNo = 0;
+
+          // DB のカラムをループで取り出す
+          while ($DataRows = $Execute->fetch()) :
+            $CategoryId = $DataRows["id"];
+            $CategoryDate = $DataRows["datetime"];
+            $CategoryName = $DataRows["title"];
+            $CreatorName = $DataRows["author"];
+            $SrNo++; // increment
+
+          ?>
+
+            <!-- HTMLに出力（テーブル内） -->
+            <tbody>
+              <tr>
+                <td><?php echo htmlentities($SrNo); ?></td>
+                <td><?php echo htmlentities($CategoryDate); ?></td>
+                <td><?php echo htmlentities($CategoryName); ?></td>
+                <td><?php echo htmlentities($CreatorName); ?></td>
+
+                <!-- Delete btn -->
+                <td><a class="btn btn-danger" href="DeleteCategory.php?id=<?php echo $CategoryId; ?>">Delete</a></td>
+
+              </tr>
+
+            </tbody>
+          <?php endwhile; ?>
+        </table>
+
+
+
+
+
+
       </div>
     </div>
   </section>
