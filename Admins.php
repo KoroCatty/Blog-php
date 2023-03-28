@@ -258,6 +258,65 @@ if (isset($_POST["Submit"])) {
 
           </div>
         </form>
+
+
+<!--  -->
+        <h2>Existing Admins</h2>
+        <table class="table table-striped table-hover">
+          <thead class="thead-dark">
+            <tr>
+              <th>No. </th>
+              <th>Date&Time</th>
+              <th>UserName</th>
+              <th>Admin Name</th>
+              <th>Added by </th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <?php
+          // 関数内からグローバル変数にアクセスする際に必要
+          global $ConnectingDB;
+
+          // statusが OFFのやつのみ を最新順で取得する
+          $sql = "select * from admins  ORDER BY id desc ";
+          $Execute = $ConnectingDB->query($sql);
+
+          // HTMLに表示した時に番号を振り付ける　ex) 1 2 3 4 5 
+          $SrNo = 0;
+
+          // DB のカラムをループで取り出す
+          while ($DataRows = $Execute->fetch()) :
+            $AdminId = $DataRows["id"];
+            $DateTime = $DataRows["datetime"];
+            $AdminUsername = $DataRows["username"];
+            $AdminName = $DataRows["adname"];
+            $AddedBy = $DataRows["addedby"];
+            $SrNo++; // increment
+
+          ?>
+
+            <!-- HTMLに出力（テーブル内） -->
+            <tbody>
+              <tr>
+                <td><?php echo htmlentities($SrNo); ?></td>
+                <td><?php echo htmlentities($DateTime); ?></td>
+                <td><?php echo htmlentities($AdminUsername); ?></td>
+                <td><?php echo htmlentities($AdminName); ?></td>
+                <td><?php echo htmlentities($AddedBy); ?></td>
+
+                <!-- Delete btn -->
+                <td><a class="btn btn-danger" href="DeleteAdmin.php?id=<?php echo $AdminId; ?>">Delete</a></td>
+
+              </tr>
+
+            </tbody>
+          <?php endwhile; ?>
+        </table>
+
+
+
+
+
       </div>
     </div>
   </section>
