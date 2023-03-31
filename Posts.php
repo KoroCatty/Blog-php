@@ -19,7 +19,7 @@ Confirm_Login();
 
 <!DOCTYPE html>
 <html lang="en">
-  
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -133,7 +133,7 @@ Confirm_Login();
     <div class="row">
       <div class="col-lg-12">
 
-      <!-- ここに結果を表示 -->
+        <!-- ここに結果を表示 -->
         <?php
         echo ErrorMessage();
         echo SuccessMessage();
@@ -223,7 +223,60 @@ Confirm_Login();
 
                 <!-- imageを表示 -->
                 <td><img src="Uploads/<?php echo $Image; ?>" width="170px;" height="100px;"></td>
-                <td>Comments</td>
+
+
+
+                <td>
+                  <!-- ------------------------ -->
+                  <!-- Approveしたコメント数を表示 -->
+                  <!-- ------------------------ -->
+                  <span class="badge badge-success">
+                    <?php
+                    global $ConnectingDB;
+
+                    // commentsテーブル内の Id と一致し、かつ statusが　ON のコメントのみ摘出
+                    $sqlApprove = "select COUNT(*) from comments WHERE post_id = '$Id' AND status = 'ON' ";
+
+                    $stmtApprove = $ConnectingDB->query($sqlApprove);
+                    $RowsTotal = $stmtApprove->fetch();
+
+                    // fetch()はarrayで帰ってくるので、それをstringに変換する関数
+                    $Total = array_shift($RowsTotal);
+
+                    // if the comment is 0, do not show the number
+                    if ($Total) {
+                      echo $Total;
+                    }
+                    ?>
+                  </span>
+
+
+                  <!-- ------------------------ -->
+                  <!-- Dis-Approveしたコメント数を表示 -->
+                  <!-- ------------------------ -->
+                  <span class="badge text-danger">
+                    <?php
+                    global $ConnectingDB;
+
+                    // commentsテーブル内の Id と一致し、かつ statusが　ON のコメントのみ摘出
+                    $sqlDisApprove = "select COUNT(*) from comments WHERE post_id = '$Id' AND status = 'OFF' ";
+
+                    $stmtDisApprove = $ConnectingDB->query($sqlDisApprove);
+                    $RowsTotal = $stmtDisApprove->fetch();
+
+                    // fetch()はarrayで帰ってくるので、それをstringに変換する関数
+                    $Total = array_shift($RowsTotal);
+
+                    // if the comment is 0, do not show the number
+                    if ($Total) {
+                      echo $Total;
+                    }
+                    ?>
+                  </span>
+                </td>
+
+
+
                 <td>
                   <!-- Edit button -->
                   <a href="./EditPost.php?id=<?php echo htmlentities($Id); ?>" class="">
@@ -236,7 +289,7 @@ Confirm_Login();
                   </a>
                 </td>
                 <td>
-                <a href="FullPost.php?id=<?php echo htmlentities($Id); ?>" target="_blank"><span class="btn btn-primary">Live Preview</span></a>
+                  <a href="FullPost.php?id=<?php echo htmlentities($Id); ?>" target="_blank"><span class="btn btn-primary">Live Preview</span></a>
                 </td>
               </tr>
             </tbody>
