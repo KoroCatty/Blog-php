@@ -84,7 +84,7 @@ require_once("Includes/Sessions.php");
         <!-- lead classは文字を小さくする -->
         <h1 class="lead">The Complete blog by using PHP by Kazuya</h1>
 
-        <?php 
+        <?php
         // Session.phpから取得したエラーを表示する。ここでechoしとかないと、FullPost.phpで起こしたエラーが表示されない
         echo ErrorMessage();
         echo SuccessMessage();
@@ -94,7 +94,9 @@ require_once("Includes/Sessions.php");
         <?php
         global $ConnectingDb;
 
+        // ===================================================================
         // SQL query when Search button is active (サーチボタンに入力された時のみ発動)
+        // ===================================================================
         if (isset($_GET["SearchButton"])) {
 
           // inputの name属性を取得
@@ -114,9 +116,31 @@ require_once("Includes/Sessions.php");
           $stmt->bindValue(':search', '%' . $Search . '%');
 
           $stmt->execute();
-        } else {
+
+          // ===================================================================
+          // when Pagination is Active ex) Blog.php?page=1 (4記事ずつ表示する計算)
+          // ===================================================================
+        } elseif (isset($_GET["page"])) {
+          $Page = $_GET["page"];
+          // if user press page = 0
+          if ($Page == 0 || $Page < 1) {
+            $Page = 1;
+          } else {
+            $ShowPostFrom = ($Page * 4) - 4;
+          }
+
+          $ShowPostFrom = ($Page * 4) - 4; // 0~3, 4~7, 8~11 ... 
+
+          $sql = "select * from posts ORDER BY id desc LIMIT $ShowPostFrom, 4";
+          $stmt = $ConnectingDB->query($sql);
+        }
+
+        // =====================================================================
+        // The default SQL query (blog記事を一覧表示) (どんなURLを入力してもこれが実行)
+        // =====================================================================
+        else {
           // 新着順で表示
-          $sql = "select * from posts ORDER BY id desc";
+          $sql = "select * from posts ORDER BY id desc LIMIT 0, 3";
 
           // 指定したSQL文をデータベースに対して発行してくれる役割を持っています。
           // queryメソッドを使用して、sqlをデータベースに届けなければいけないのです。
@@ -144,8 +168,28 @@ require_once("Includes/Sessions.php");
             <img src="./Uploads/<?php echo htmlentities($Image); ?>" alt="postImg" class="blogImg card-img-top">
             <div class="card-body">
               <h4 class="card-title"><?php echo htmlentities($PostTitle); ?></h4>
-              <small class="text-muted">Written by <?php echo htmlentities($Admin); ?> On <?php echo htmlentities($DateTime); ?></small>
-              <span class="commentNumber badge badge-dark text-light">Comments 20</span>
+              <small class="text-muted">Category: <?php echo htmlspecialchars($Category); ?> & Written by <?php echo htmlentities($Admin); ?> On <?php echo htmlentities($DateTime); ?></small>
+
+              <!-- ------------------------ -->
+              <!-- Dis-Approveしたコメント数を表示 -->
+              <!-- ------------------------ -->
+              <?php
+              global $ConnectingDB;
+
+              // commentsテーブル内の Id と一致し、かつ statusが　ON のコメントのみ摘出
+              $sqlDisApprove = "select COUNT(*) from comments WHERE post_id = '$PostId' AND status = 'OFF' ";
+
+              $stmtDisApprove = $ConnectingDB->query($sqlDisApprove);
+              $RowsTotal = $stmtDisApprove->fetch();
+
+              // fetch()はarrayで帰ってくるので、それをstringに変換する関数
+              $Total = array_shift($RowsTotal);
+
+              // if the comment is 0, do not show the number
+              if ($Total > 0) {
+                echo  "<span class='commentNumber badge badge-dark text-light'>Comments $Total</span>";
+              }
+              ?>
 
               <hr />
               <p class="card-text">
@@ -156,7 +200,7 @@ require_once("Includes/Sessions.php");
                   // substr()は指定した所までを表示する
                   $PostDescription = substr($PostDescription, 0, 150) . "...";
                 }
-                echo htmlentities( $PostDescription );
+                echo htmlentities($PostDescription);
                 ?>
               </p>
               <!-- DBからIdを取得し、そのIdをURLにくっつける -->
@@ -167,6 +211,55 @@ require_once("Includes/Sessions.php");
           </div>
         <?php endwhile; ?>
         <!-- Card End -->
+
+        <!--  ------------>
+        <!-- pagination -->
+        <!-- ---------- -->
+        <nav>
+          <ul class="pagination pagination-lg">
+            <?php
+            global $ConnectingDB;
+
+            // COUNT(*)はテーブル内の全ての数を返す
+            $sql = "select COUNT(*) FROM posts";
+            $stmt = $ConnectingDB->query($sql);
+            $RowPagination = $stmt->fetch();
+
+            //array_shift() は、array の最初の値を取り出して返します。配列 array は、要素一つ分だけ短くなり、全ての要素は前にずれます。 
+            $TotalPosts = array_shift($RowPagination);
+            echo $TotalPosts . "<br>"; // array9 (全post数)
+
+            $PostPagination = $TotalPosts / 4; // 2.25
+
+            // 小数点を繰り上げ
+            $PostPagination = ceil($PostPagination);
+            echo $PostPagination; // 3
+
+            // pagination(3)に対してループをかける　３つのページネーションを表示
+            for ($i = 1; $i <= $PostPagination; $i++) : ?>
+
+              <!-- もしpage=1などがURLに入ってれば、下記のページネーションを表示 -->
+              <?php if (isset($Page)) : ?>
+
+                <!-- 現在開いてるページに対して active クラスを付けている -->
+                <?php if ($i == $Page) : ?>
+                  <li class="page-item active">
+                    <a href="Blog.php?page=<?php echo $i; ?>" class="page-link"><?php echo $i; ?></a>
+                  </li>
+
+                  <!-- 現在開いてるページ以外は activeクラスが付いていない -->
+                <?php else : ?>
+                  <li class="page-item">
+                    <a href="Blog.php?page=<?php echo $i; ?>" class="page-link"><?php echo $i; ?></a>
+                  </li>
+
+                <?php endif; ?>
+              <?php endif; ?>
+            <?php endfor; ?>
+
+
+          </ul>
+        </nav>
 
       </div>
       <!-- Main Area End -->

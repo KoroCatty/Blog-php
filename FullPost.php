@@ -223,8 +223,31 @@ if (isset($_POST["Submit"])) {
             <img src="./Uploads/<?php echo htmlentities($Image); ?>" alt="postImg" class="blogImg card-img-top">
             <div class="card-body">
               <h4 class="card-title"><?php echo htmlentities($PostTitle); ?></h4>
-              <small class="text-muted">Written by <?php echo htmlentities($Admin); ?> On <?php echo htmlentities($DateTime); ?></small>
-              <span class="commentNumber badge badge-dark text-light">Comments 20</span>
+              <small class="text-muted">Category: <?php echo htmlspecialchars($Category); ?> & Written by <?php echo htmlentities($Admin); ?> On <?php echo htmlentities($DateTime); ?></small>
+              <!-- <span class="commentNumber badge badge-dark text-light">Comments 20</span> -->
+
+              <!-- ------------------------ -->
+              <!-- Dis-Approveしたコメント数を表示 -->
+              <!-- ------------------------ -->
+              <?php
+              global $ConnectingDB;
+
+              // commentsテーブル内の Id と一致し、かつ statusが　ON のコメントのみ摘出
+              // posts table id <==> comments table post_id are connected like love birds
+              $sqlDisApprove = "select COUNT(*) from comments WHERE post_id = '$PostId' AND status = 'OFF' ";
+
+              $stmtDisApprove = $ConnectingDB->query($sqlDisApprove);
+              $RowsTotal = $stmtDisApprove->fetch();
+
+              // fetch()はarrayで帰ってくるので、それをstringに変換する関数
+              $Total = array_shift($RowsTotal);
+
+              // if the comment is 0, do not show the number
+              if ($Total > 0) {
+                echo  "<span class='commentNumber badge badge-dark text-light'>Comments $Total</span>";
+              }
+              ?>
+
 
               <hr />
               <p class="card-text">
@@ -255,20 +278,20 @@ if (isset($_POST["Submit"])) {
           $CommentDate = $DataRows['datetime'];
           $CommenterName = $DataRows['name'];
           $CommentContent = $DataRows['comment'];
-        
+
         ?>
 
-        <!-- display comments that are extracted by DB -->
-        <div class="commentBlock media">
-          <img src="./src/img/Koro.jpg" alt="" class="commentImg d-block img-fluid align-self-center">
-          <div class="media-body ml-2">
-            <h3 class=""><?php echo htmlentities($CommenterName); ?></h3>
-            <p class="small"><?php echo htmlentities($CommentDate); ?></p>
-            <p class=""><?php echo htmlentities($CommentContent); ?></p>
+          <!-- display comments that are extracted by DB -->
+          <div class="commentBlock media">
+            <img src="./src/img/Koro.jpg" alt="" class="commentImg d-block img-fluid align-self-center">
+            <div class="media-body ml-2">
+              <h3 class=""><?php echo htmlentities($CommenterName); ?></h3>
+              <p class="small"><?php echo htmlentities($CommentDate); ?></p>
+              <p class=""><?php echo htmlentities($CommentContent); ?></p>
+            </div>
           </div>
-        </div>
-        <hr />
-<?php endwhile; ?>
+          <hr />
+        <?php endwhile; ?>
 
 
 

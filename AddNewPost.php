@@ -54,7 +54,7 @@ if (isset($_POST["Submit"])) {
 
     // Functions.phpで定義しているので、ここで指定した先にリダイレクトできるようになる
     Redirect_to("AddNewPost.php");
-  } elseif (strlen($Category) > 5) { //strlen — 文字列の長さを得る
+  } elseif (strlen($Category) < 5) { //strlen — 文字列の長さを得る
     $_SESSION["ErrorMessage"] = "Post title should be greater than 5 characters";
     Redirect_to("AddNewPost.php");
   } elseif (strlen($PostText) > 999) { //strlen — 文字列の長さを得る
