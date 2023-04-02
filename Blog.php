@@ -212,11 +212,25 @@ require_once("Includes/Sessions.php");
         <?php endwhile; ?>
         <!-- Card End -->
 
-        <!--  ------------>
+        <!--  --------------------------------------------->
         <!-- pagination -->
-        <!-- ---------- -->
+        <!-- ------------------------------------------- -->
         <nav>
           <ul class="pagination pagination-lg">
+
+            <!-- Backward Button -->
+            <?php if (isset($Page)) :
+
+              // もし現在のページが、2ページ以上なら下記HTMLを表示
+              if ($Page > 1 ) : ?>
+                <li class="page-item">
+                  <a href="Blog.php?page=<?php echo $Page - 1; ?>" class="page-link">&laquo;</a>
+                </li>
+              <?php endif; ?>
+            <?php endif; ?>
+
+
+            <!-- Pagination  ----------------------->
             <?php
             global $ConnectingDB;
 
@@ -229,7 +243,7 @@ require_once("Includes/Sessions.php");
             $TotalPosts = array_shift($RowPagination);
             echo $TotalPosts . "<br>"; // array9 (全post数)
 
-            $PostPagination = $TotalPosts / 4; // 2.25
+            $PostPagination = $TotalPosts / 4; // 2.25  (9 / 4 = 2.25)
 
             // 小数点を繰り上げ
             $PostPagination = ceil($PostPagination);
@@ -241,7 +255,7 @@ require_once("Includes/Sessions.php");
               <!-- もしpage=1などがURLに入ってれば、下記のページネーションを表示 -->
               <?php if (isset($Page)) : ?>
 
-                <!-- 現在開いてるページに対して active クラスを付けている -->
+                <!-- 現在開いてるページに対して active クラスを付けている (1 == page=1 ならそのページをactive-->
                 <?php if ($i == $Page) : ?>
                   <li class="page-item active">
                     <a href="Blog.php?page=<?php echo $i; ?>" class="page-link"><?php echo $i; ?></a>
@@ -257,7 +271,18 @@ require_once("Includes/Sessions.php");
               <?php endif; ?>
             <?php endfor; ?>
 
+            <!--  -------------------->
+            <!-- Forward Button -->
+            <!--  -------------------->
+            <?php if (isset($Page)) :
 
+              // もし現在のページが、総ページネーション数より少ない場合のみ下記HTMLを表示する
+              if ($Page + 1 <= $PostPagination) : ?>
+                <li class="page-item">
+                  <a href="Blog.php?page=<?php echo $Page + 1 ?>" class="page-link">&raquo;</a>
+                </li>
+              <?php endif; ?>
+            <?php endif; ?>
           </ul>
         </nav>
 
