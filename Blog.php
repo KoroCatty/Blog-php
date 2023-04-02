@@ -133,6 +133,19 @@ require_once("Includes/Sessions.php");
 
           $sql = "select * from posts ORDER BY id desc LIMIT $ShowPostFrom, 4";
           $stmt = $ConnectingDB->query($sql);
+
+          // =====================================================================
+          // Query when Category is active in URL Tab
+          // =====================================================================
+        } elseif (isset($_GET["category"])) {
+          $Category = $_GET["category"];
+
+          // プレースホルダーの :catを使いbindValueで実際の値を入れ込む
+          $sql = "select * from posts WHERE category= :cat";
+
+          $stmt = $ConnectingDB->prepare($sql);
+          $stmt->bindValue(":cat", $Category);
+          $stmt->execute();
         }
 
         // =====================================================================
@@ -222,7 +235,7 @@ require_once("Includes/Sessions.php");
             <?php if (isset($Page)) :
 
               // もし現在のページが、2ページ以上なら下記HTMLを表示
-              if ($Page > 1 ) : ?>
+              if ($Page > 1) : ?>
                 <li class="page-item">
                   <a href="Blog.php?page=<?php echo $Page - 1; ?>" class="page-link">&laquo;</a>
                 </li>
@@ -289,8 +302,101 @@ require_once("Includes/Sessions.php");
       </div>
       <!-- Main Area End -->
 
+      <!-- --------------------------- -->
       <!-- Side Area Start -->
+      <!-- --------------------------- -->
       <div class="col-sm-4" style="min-height: 40px; background: white;">
+        <div class="card mt-4">
+          <div class="card-body">
+            <img src="./src/img/Koro.jpg" alt="" class="d-block img-fluid mb-3">
+            <div class="text-center">
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Enim qui, sequi autem officiis iste quidem quo omnis placeat itaque id. Eum est, consequatur nesciunt ea explicabo aperiam quod illo esse.
+            </div>
+          </div>
+        </div>
+        <br />
+        <div class="card">
+          <div class="card-header bg-dark text-light">
+            <h2 class="lead">Sign Up !</h2>
+          </div>
+
+          <div class="card-body">
+            <button class="btn btn-success btn-block text-center text-white" name="button">Join The Forum</button>
+            <button class="btn btn-danger btn-block text-center text-white mb-4" name="button">Login</button>
+            <div class="input-group mb-3">
+              <input type="text" class="form-control" name="" placeholder="Enter your Email" value="">
+
+              <div class="input-group-append">
+                <button class="btn btn-primary btn-block text-center text-white" name="button">Subscribe Now</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <br>
+
+        <div class="card">
+          <div class="card-header bg-primary text-light">
+            <h2 class="lead">Categories</h2>
+          </div>
+          <div class="card-body">
+            <?php
+            // カテゴリーを全て取得して表示
+            global $ConnectingDB;
+            $sql = "select * from category ORDER BY id desc";
+            $stmt = $ConnectingDB->query($sql);
+            while ($DataRows = $stmt->fetch()) :
+              $CategoryId = $DataRows["id"];
+              $CategoryName = $DataRows["title"];
+            ?>
+
+              <!-- category title名を　URLに付与したページに飛ばす -->
+              <a href="Blog.php?category=<?php echo $CategoryName; ?>">
+                <span class="heading"><?php echo $CategoryName; ?></span><br />
+              </a>
+            <?php endwhile; ?>
+          </div>
+        </div>
+        <br />
+
+        <!--  --------------------->
+        <!-- Recent Posts -->
+        <!--    ------------------->
+        <div class="card">
+          <div class="card-header bg-info text-white">
+            <h2 class="lead">Recent Posts</h2>
+          </div>
+
+          <div class="card-body">
+            <?php
+
+            // postsテーブルから5件取得
+            global $ConnectingDB;
+            $sql = "select * from posts ORDER BY id desc LIMIT 0, 5 ";
+            $stmt = $ConnectingDB->query($sql);
+
+            while ($DataRows = $stmt->fetch()) :
+              $Id = $DataRows['id'];
+              $Title = $DataRows['title'];
+              $DateTime = $DataRows['datetime'];
+              $Image = $DataRows['image'];
+            ?>
+
+              <div class="media">
+                <img src="./Uploads/<?php echo htmlentities($Image) ; ?>" alt="" class="d-block img-fluid align-self-start" width="72" height="76">
+
+              <!-- postsテーブルの各記事のIDのURLに飛ぶ -->
+                <div class="media-body ml-2">
+                  <a href="FullPost.php?id=<?php echo htmlentities($Id); ?>" target="_blank">
+                    <h6 class="lead"><?php echo htmlentities($Title); ?></h6>
+                  </a>
+                  <p class="small"><?php echo htmlentities($DateTime); ?></p>
+                </div>
+              </div>
+              <hr />
+            <?php endwhile; ?>
+
+          </div>
+        </div>
 
       </div>
       <!-- Side Area End -->
