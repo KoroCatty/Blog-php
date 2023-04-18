@@ -1,4 +1,4 @@
-<?php
+<!-- <?php
 
 $blogs = $_POST;
 
@@ -76,4 +76,4 @@ echo 'Posted a blog successfully!';
 
 
 
-
+ -->

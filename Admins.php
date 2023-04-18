@@ -42,7 +42,7 @@ if (isset($_POST["Submit"])) {
 
     // 四文字以下じゃないとエラー
   } elseif (strlen($Password) < 4) { //strlen — 文字列の長さを得る
-    $_SESSION["ErrorMessage"] = "Title should be greater than 3 characters";
+    $_SESSION["ErrorMessage"] = "password should be greater than 3 characters";
     Redirect_to("Admins.php");
 
     // 同じでないならエラー

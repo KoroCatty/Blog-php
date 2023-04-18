@@ -2,7 +2,13 @@
 <?php require_once("./DB/connect.php"); 
 $ConnectingDB = dbConnect();
 ?>
+
+
+
 <?php
+// =======================================
+// リダイレクト
+// =======================================
 function Redirect_to($New_Location) {
 header("Location:". $New_Location); // go to this location
 exit;
