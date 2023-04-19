@@ -152,6 +152,52 @@ table {
   border-spacing: 0;
 }
 
+/* ==========================
+  ローディング画面
+========================== */
+.bl_loading {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.95);
+  color: #fff;
+  font-size: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  opacity: 1;
+  visibility: visible;
+  transition: 0.3s;
+  z-index: 10;
+}
+
+.bl_loading.loaded {
+  opacity: 0;
+  visibility: hidden;
+}
+
+@keyframes loading {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.bl_loadingCircle {
+  animation: 3s linear loading infinite;
+  height: 30px;
+  width: 30px;
+  border: 1px solid #fff;
+  border-top: 1px solid #aaa;
+  border-radius: 50%;
+  content: "";
+  margin-bottom: 10px;
+}
+
 /*!
  * Bootstrap  v5.2.3 (https://getbootstrap.com/)
  * Copyright 2011-2022 The Bootstrap Authors
@@ -11035,3 +11081,10 @@ body {
 .loginBox {
   min-height: 500px;
 }
+
+/* position: fixed;〜height: 100%;でブラウザ枠いっぱいのサイズにします。
+background: #CCC5C1;ここの背景色は好きな色にして、
+display: flex;〜align-items: center;で、中の要素が中央配置されるようにします。
+transition: all 0.3s;これは消えるときのスピードなので適時調整してもらって、
+z-index: 9999;で一番上に配置されるように大きな数値を設定します。 */
+/* ローディング画面の側 */

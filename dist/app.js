@@ -3198,14 +3198,32 @@ function withinMaxClamp(min, value, max) {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var bootstrap__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! bootstrap */ "./node_modules/bootstrap/dist/js/bootstrap.esm.js");
-// src/javascript/app.js
-// alert('hello');
-
 
 
 // print out the year
 var year = document.getElementById("year");
 year.innerHTML = new Date().getFullYear();
+
+// =============================================
+// ローディング画面 (this func add css class)
+// =============================================
+function loadedPage() {
+  var loadingID = document.getElementById("js_loading");
+  loadingID.classList.add("loaded");
+}
+
+// if there's no sessionStorage, add it and fire the function
+if (!sessionStorage.getItem("visited")) {
+  sessionStorage.setItem("visited", "first");
+  window.addEventListener("load", function () {
+    setTimeout(loadedPage, 2000);
+  });
+  setTimeout(loadedPage, 2000);
+
+  // otherwise just fire the function so that you don't see loading animation
+} else {
+  loadedPage();
+}
 
 /***/ }),
 

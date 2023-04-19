@@ -97,56 +97,57 @@ if (isset($_POST["Submit"])) {
   <!-- Navbar -->
   <!-- ------ -->
 
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container">
-      <a href="MyProfile.php" class="navbar-brand">KOJIMA.COM</a>
+  <header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container">
+        <a href="Dashboard.php" class="navbar-brand">KOJIMA PET</a>
 
-      <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarcollapseCMS">
-        <span class="navbar-toggler-icon"></span>
-      </button>
+        <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarcollapseCMS">
+          <span class="navbar-toggler-icon"></span>
+        </button>
 
-      <div class="collapse navbar-collapse" id="navbarcollapseCMS">
+        <div class="collapse navbar-collapse" id="navbarcollapseCMS">
 
-        <ul class="navbar-nav">
-          <li class="nav-item">
+          <ul class="navbar-nav">
+            <!-- <li class="nav-item">
             <a href="Dashboard.php" class="nav-link">
               <i class="fas fa-user text-success"></i> My Profile</a>
-          </li>
-          <li class="nav-item">
-            <a href="Posts.php" class="nav-link">Dashboard</a>
-          </li>
-          <li class="nav-item">
-            <a href="Categories.php" class="nav-link">Posts</a>
-          </li>
-          <li class="nav-item">
-            <a href="Admins.php" class="nav-link">Categories</a>
-          </li>
-          <li class="nav-item">
-            <a href="" class="nav-link">Manage Admins</a>
-          </li>
-          <li class="nav-item">
-            <a href="Comments.php" class="nav-link">Comments</a>
-          </li>
-          <li class="nav-item">
-            <a href="Blog.php?page=1" class="nav-link">Live Blog</a>
-          </li>
-        </ul>
+          </li> -->
+            <li class="nav-item">
+              <a href="Dashboard.php" class="nav-link">Dashboard</a>
+            </li>
+            <li class="nav-item">
+              <a href="Posts.php" class="nav-link">Posts</a>
+            </li>
+            <li class="nav-item">
+              <a href="Categories.php" class="nav-link">Categories</a>
+            </li>
+            <li class="nav-item">
+              <a href="Admins.php" class="nav-link">Manage Admins</a>
+            </li>
+            <li class="nav-item">
+              <a href="Comments.php" class="nav-link">Comments</a>
+            </li>
+            <li class="nav-item">
+              <a href="Blog.php?page=1" target="_blank" class="nav-link">Live Blog</a>
+            </li>
+          </ul>
 
-        <ul class="navbar-nav">
-          <li class="nav-item">
-            <a href="Logout.php" class="nav-link text-danger">
-              <i class="fas fa-user-times"></i> Logout</a>
-          </li>
-        </ul>
-
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a href="Logout.php" class="nav-link text-danger">
+                <i class="fas fa-user-times"></i> Logout</a>
+            </li>
+          </ul>
+        </div>
       </div>
-    </div>
-  </nav>
+    </nav>
+  </header>
 
   <!--  -------->
-  <!-- header -->
+  <!-- title -->
   <!-- ------ -->
-  <header class="bg-dark text-white py-3">
+  <div class="bg-dark text-white py-3">
     <div class="container">
       <div class="row">
         <div class="col-md-12">
@@ -154,7 +155,7 @@ if (isset($_POST["Submit"])) {
         </div>
       </div>
     </div>
-  </header>
+  </div>
 
   <!--  -------->
   <!-- Main Area -->

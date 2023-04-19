@@ -80,15 +80,34 @@ if (isset($_POST["Submit"])) {
   <div style="height:10px; background:#27aae1;"></div>
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
-      <a href="#" class="navbar-brand"> JAZEBAKRAM.COM</a>
+      <a href="index.php" class="navbar-brand"> KAZUYA.COM</a>
       <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarcollapseCMS">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarcollapseCMS">
+        <ul class="navbar-nav mr-auto">
 
+          <li class="nav-item">
+            <a href="index.php" class="nav-link">Home</a>
+          </li>
+          <li class="nav-item">
+            <a href="About.php" class="nav-link">About Us</a>
+          </li>
+          <li class="nav-item">
+            <a href="Blog.php" class="nav-link">Blog</a>
+          </li>
+          <li class="nav-item">
+            <a href="Contact.php" class="nav-link">Contact Us</a>
+          </li>
+        </ul>
       </div>
     </div>
   </nav>
+
+
+
+
+
   <div style="height:10px; background:#27aae1;"></div>
   <!-- NAVBAR END -->
 

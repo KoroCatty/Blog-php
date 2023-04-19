@@ -1,6 +1,12 @@
 <?php
 //Header
 include("./templates/Header.php");
+
+
+// Functions
+require_once("Includes/Functions.php");
+
+
 ?>
 
 
@@ -15,8 +21,13 @@ include("./templates/Header.php");
 
       <?php
       // inputの name属性を取得
-      $Search = $_GET["Search"];
-      echo  "Search result of:" . ' ' .  "<span style='font-size: 2rem; color:red; letter-spacing: 1px;'> $Search </span>";
+      if (isset($_GET['Search'])) {
+
+        $Search = $_GET["Search"];
+        echo  "<div style='font-size:2rem; background: white; border-radius: 20px; text-align:center;'> Search result:" . ' ' .
+          "<span style='font-size: 2.4rem; color:red; letter-spacing: 1px;'> $Search </span>
+       </div>";
+      }
       ?>
 
 
@@ -26,7 +37,7 @@ include("./templates/Header.php");
       echo SuccessMessage();
       ?>
 
-      <!-- Fetch Posts From DB --> 
+      <!-- Fetch Posts From DB -->
       <?php
       global $ConnectingDb;
 
@@ -88,13 +99,29 @@ include("./templates/Header.php");
       // The default SQL query (blog記事を一覧表示) (どんなURLを入力してもこれが実行)
       // =====================================================================
       else {
+        if (empty($_GET[''])) {
+
+          // 4件表示で、ページネーションあり
+          if (0 == 0 || 4 < 1) {
+            $Page = 1;
+          } else {
+            $ShowPostFrom = (1 * 4) - 4;
+          }
+        }
+        $ShowPostFrom = (1 * 4) - 4; // 0~3, 4~7, 8~11 ... 
+
+        $sql = "select * from posts ORDER BY id desc LIMIT $ShowPostFrom, 4";
+        $stmt = $ConnectingDB->query($sql);
+
+
+
         // 新着順で表示
-        $sql = "select * from posts ORDER BY id desc LIMIT 0, 3";
+        // $sql = "select * from posts ORDER BY id desc LIMIT 0, 3";
 
         // 指定したSQL文をデータベースに対して発行してくれる役割を持っています。
         // queryメソッドを使用して、sqlをデータベースに届けなければいけないのです。
         // sql文を実行する時は必ずDBにアクセスせなあかん
-        $stmt = $ConnectingDB->query($sql);
+        // $stmt = $ConnectingDB->query($sql);
       }
 
 
@@ -120,8 +147,14 @@ include("./templates/Header.php");
           <img src="./Uploads/<?php echo htmlentities($Image); ?>" alt="postImg" class="blogImg card-img-top">
           <div class="card-body">
             <h4 class="card-title"><?php echo htmlentities($PostTitle); ?></h4>
-            <small class="text-muted">Category: <?php echo htmlspecialchars($Category); ?> & Written by <?php echo htmlentities($Admin); ?> On <?php echo htmlentities($DateTime); ?></small>
-
+            <p class="text-muted">Category: <?php echo htmlspecialchars($Category); ?> & Written by
+            <span style="font-size:1.6rem; color:blue">
+             <?php echo htmlentities($Admin); ?> 
+             </span>
+            On 
+            <span style="font-size:1.2rem; color:black">
+            <?php echo htmlentities($DateTime); ?></p>
+            </span>
             <!-- ------------------------ -->
             <!-- Dis-Approveしたコメント数を表示 -->
             <!-- ------------------------ -->
