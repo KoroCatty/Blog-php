@@ -11082,9 +11082,34 @@ body {
   min-height: 500px;
 }
 
-/* position: fixed;〜height: 100%;でブラウザ枠いっぱいのサイズにします。
-background: #CCC5C1;ここの背景色は好きな色にして、
-display: flex;〜align-items: center;で、中の要素が中央配置されるようにします。
-transition: all 0.3s;これは消えるときのスピードなので適時調整してもらって、
-z-index: 9999;で一番上に配置されるように大きな数値を設定します。 */
-/* ローディング画面の側 */
+.headerContainer {
+  width: 100vw !important;
+}
+@media screen and (max-width: 1200px) and (min-width: 992px) {
+  .headerContainer {
+    display: block !important;
+  }
+}
+
+#navbarcollapseCMS {
+  justify-content: flex-end !important;
+}
+
+.headerLoginBtn {
+  padding-top: 8px;
+}
+.headerLoginBtn:hover {
+  transition: all 0.6s ease;
+  transform: translate(0, 4px);
+}
+.headerLoginBtn a {
+  text-decoration: none;
+  padding: 10px 20px;
+  background-color: #fff;
+  border-radius: 20px;
+}
+.headerLoginBtn a:hover {
+  color: white;
+  transition: all 0.6s ease;
+  background-color: rgb(107, 107, 107);
+}

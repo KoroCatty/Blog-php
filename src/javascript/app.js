@@ -34,9 +34,9 @@ if (!sessionStorage.getItem("visited")) {
   } else {
     sessionStorage.setItem("visited", "first");
     window.addEventListener("load", function () {
-      setTimeout(loadedPage, 2000);
+      setTimeout(loadedPage, 1000);
     });
-    setTimeout(loadedPage, 2000);
+    setTimeout(loadedPage, 1000);
   }
 
   // otherwise just fire the function so that you don't see loading animation

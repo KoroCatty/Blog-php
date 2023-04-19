@@ -13,6 +13,7 @@ require_once("Includes/Sessions.php");
 // 現在のスクリプトが実行されているサーバの IP アドレスを返すもの
 $_SESSION["TrackingURL"] = $_SERVER["PHP_SELF"];
 
+
 // Functions.phpで設定した、ログインしてないと入れない様にする関数
 Confirm_Login();
 ?>
@@ -110,11 +111,30 @@ Confirm_Login();
             </li>
           </ul>
 
-          <ul class="navbar-nav">
+          <ul class="navbar-nav" style="gap: 20px;">
             <li class="nav-item">
               <a href="Logout.php" class="nav-link text-danger">
                 <i class="fas fa-user-times"></i> Logout</a>
             </li>
+            
+
+            <?php
+            // Login.phpで設定したセッションを使い格納(ログインの有無を判断)
+            if (isset($_SESSION["UserName"])) {
+              $Admin = $_SESSION["UserName"];
+            }
+            ?>
+
+          <!-- ログイン時のみ表示  (ユーザー名)-->
+           <?php
+            if (isset($Admin)) {
+              echo '
+              <li class="text-white fs-4">' .
+              '<i class="fa-regular fa-user text-white"></i>'
+              . htmlentities($Admin) . '</li>
+              ';
+            } ?>
+
           </ul>
         </div>
       </div>

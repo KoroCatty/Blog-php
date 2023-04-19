@@ -69,7 +69,7 @@ $_SESSION["TrackingURL"] = $_SERVER["PHP_SELF"];
   <!-- ------ -->
   <header>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <div class="container">
+      <div class="headerContainer container">
         <a href="index.php" class="navbar-brand">KOJIMA PET</a>
 
         <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarcollapseCMS">
@@ -78,46 +78,75 @@ $_SESSION["TrackingURL"] = $_SERVER["PHP_SELF"];
 
         <div class="collapse navbar-collapse" id="navbarcollapseCMS">
 
-          <ul class="navbar-nav">
+          <ul class="navbar-nav" style="gap:10px;">
 
-          <li class="nav-item">
-            <a href="index.php" class="nav-link">Home</a>
-          </li>
-          <li class="nav-item">
-            <a href="About.php" class="nav-link">About Us</a>
-          </li>
-          <li class="nav-item">
-            <a href="Blog.php" class="nav-link">Blog</a>
-          </li>
-          <li class="nav-item">
-            <a href="Contact.php" class="nav-link">Contact Us</a>
-          </li>
-          <li class="nav-item">
-            <a href="RegisterUser.php" class="nav-link">Register?</a>
-          </li>
+            <li class="nav-item">
+              <a href="index.php" class="nav-link">Home</a>
+            </li>
+            <li class="nav-item">
+              <a href="About.php" class="nav-link">About Us</a>
+            </li>
+            <li class="nav-item">
+              <a href="Blog.php" class="nav-link">Blog</a>
+            </li>
+            <li class="nav-item">
+              <a href="Contact.php" class="nav-link">Contact Us</a>
+            </li>
 
-          <!-- ログイン時のみ -->
-          <li class="nav-item">
-            <a href="Dashboard.php" class="nav-link text-danger" target="blank">
-              <i class="fa-solid fa-file-export"></i>
-              Go to Admin
-            </a>
-          </li>
+            <?php
+            // Login.phpで設定したセッションを使い格納(ログインの有無を判断)
+            if (isset($_SESSION["UserName"])) {
+              $Admin = $_SESSION["UserName"];
+            }
+            ?>
 
-            <li>
+            <!-- ログイン時のみ表示 -->
+            <?php
+            if (isset($Admin)) {
+              echo '<li class="nav-item">
+                <a href="Dashboard.php" class="nav-link text-danger" target="blank">
+                  <i class="fa-solid fa-file-export"></i>
+                  Go to Admin
+                </a>
+              </li>
+              <li class="nav-item">
+              <a href="Logout.php" class="nav-link text-danger">
+                  <i class="fas fa-user-times"></i> Logout</a>
+              </li>
+              ';
+            } ?>
 
-              <!-- spサイズではフォーム非表示 -->
-              <form action="Blog.php" class="form-inline d-none d-sm-block">
-                <div class="form-group">
+
+            <!-- spサイズではフォーム非表示 -->
+            <li class="">
+              <form action="Blog.php" class="form-inline d-none d-sm-block ml-5">
+                <div class="form-group d-flex">
                   <input type="text" name="Search" placeholder="Search here" value="" class="form-control mr-2">
                   <button class="btn btn-primary" name="SearchButton">Go</button>
                 </div>
               </form>
             </li>
 
-            <li>
+            <!-- ログインボタン　(ログイン時は表示しない) -->
+            <?php
+            // when logged in
+            if (empty($Admin)) {
+              echo '<li class="headerLoginBtn">
               <a href="./Login.php">LOGIN</a>
-            </li>
+            </li>';
+            };
+            ?>
+
+
+            <!-- ログイン時のみ表示  (ユーザー名)-->
+            <?php
+            if (isset($Admin)) {
+              echo '
+              <li class="text-white fs-4">' .
+                '<i class="fa-regular fa-user text-white"></i>'
+                . htmlentities($Admin) . '</li>
+              ';
+            } ?>
           </ul>
 
         </div>

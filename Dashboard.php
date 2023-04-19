@@ -5,7 +5,7 @@ include('./templates/AdminHeader.php');
 
 
 <?php
-// Login.phpで設定したセッションを使い格納
+ // Login.phpで設定したセッションを使い格納(ログインの有無を判断)
 $Admin = $_SESSION["UserName"];?>
 
 <!--  -------->
@@ -20,15 +20,6 @@ $Admin = $_SESSION["UserName"];?>
             <?php echo htmlentities($Admin); ?> !!
           </span>
       </span>
-
- 
-
-<!-- 
-      <div class="col-4 md-col-l6 sm-col-8">welcome
-        <span class="text-danger fs-3">
-          <?php // echo htmlentities($Admin); ?>
-        </span>
-      </div> -->
 
       <!-- Post -->
       <div class="col-lg-3 mb-2">

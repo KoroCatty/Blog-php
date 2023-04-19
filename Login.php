@@ -5,7 +5,7 @@ include("./templates/Header.php");
 
 <?php
 // ログイン後このページに来ようとしたらリダイレクトする (Loginページに来れるのはおかしいので)
-if(isset($_SESSION["UserId"])) {
+if (isset($_SESSION["UserId"])) {
   Redirect_to("Dashboard.php");
 }
 ?>
@@ -33,16 +33,15 @@ if (isset($_POST["Submit"])) {
       // adminsテーブルのカラムを、左側のSESSIONの自由に設定した名前に格納
       $_SESSION["UserId"] = $Found_Account["id"];
       $_SESSION["UserName"] = $Found_Account["username"];
-      $_SESSION["AdminName"] = $Found_Account["adname"];  
+      $_SESSION["AdminName"] = $Found_Account["adname"];
 
       // 各ページで設定したセッションをここで使用してるので、ログインしたらsessionが残っているページに飛ぶ
-      if ( isset($_SESSION["TrackingURL"])) {
+      if (isset($_SESSION["TrackingURL"])) {
         Redirect_to($_SESSION["TrackingURL"]);
 
         // sessionがなかったら、ここに飛ばす
       } else {
-      Redirect_to("Dashboard.php");
-
+        Redirect_to("Dashboard.php");
       }
 
       // SESSIONを使い, すぐ上で定義した、koroの、adname を表示する
@@ -60,81 +59,88 @@ if (isset($_POST["Submit"])) {
 
 
 
-  <div style="height:10px; background:#27aae1;"></div>
-  <!-- NAVBAR END -->
+<div style="height:10px; background:#27aae1;"></div>
+<!-- NAVBAR END -->
 
-  <!-- HEADER -->
-  <header class="bg-dark text-white py-3">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-12">
-          <h1>Login</h1>
-        </div>
+<!-- HEADER -->
+<header class="bg-dark text-white py-3">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <h1>Login</h1>
       </div>
     </div>
-  </header>
-  <!-- HEADER END -->
-  <br>
+  </div>
+</header>
+<!-- HEADER END -->
+<br>
 
-  <!-- Main Area -->
-  <section class="loginBox container py-2 mb-4">
-    <div class="row">
-      <!-- offsetで真ん中に寄せる -->
-      <div class="offset-sm-3 col-sm-6 col-sm-6">
+<!-- Main Area -->
+<section class="loginBox container py-2 mb-4">
+  <div class="row">
+    <!-- offsetで真ん中に寄せる -->
+    <div class="offset-sm-3 col-sm-6 col-sm-6">
 
       <!-- セッションでエラー表示 -->
-        <?php
-        echo ErrorMessage();
-        echo SuccessMessage();
-        ?>
+      <?php
+      echo ErrorMessage();
+      echo SuccessMessage();
+      ?>
 
-        <div class="card bg-secondary text-light">
-          <div class="card-header">
-            <h4 class="">Well come back !</h4>
-          </div>
+      <div class="card bg-secondary text-light">
+        <div class="card-header">
+          <h4 class="">Well come back !</h4>
+        </div>
 
 
-          <div class="card-body bg-dark">
-            <!-- Username -->
-            <form action="Login.php" method="post" class="">
-              <div class="form-group">
-                <label for="username"><span class="FieldInfo">
-                    Username:
-                  </span></label>
-                <div class="input-group mb-3">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text text-white bg-info">
-                      <i class="fas fa-user"></i>
-                    </span>
-                  </div>
-                  <input type="text" name="Username" id="username" value="" class="form-control">
+        <div class="card-body bg-dark">
+          <!-- Username -->
+          <form action="Login.php" method="post" class="">
+            <div class="form-group">
+              <label for="username"><span class="FieldInfo">
+                  Username:
+                </span></label>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text text-white bg-info">
+                    <i class="fas fa-user"></i>
+                  </span>
                 </div>
+                <input type="text" name="Username" id="username" value="" class="form-control">
               </div>
+            </div>
 
-              <!-- Password -->
-              <div class="form-group">
-                <label for="password"><span class="FieldInfo">
-                    Password:
-                  </span></label>
-                <div class="input-group mb-3">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text text-white bg-info">
-                      <i class="fas fa-lock"></i>
-                    </span>
-                  </div>
-                  <input type="password" name="Password" id="password" value="" class="form-control">
+            <!-- Password -->
+            <div class="form-group">
+              <label for="password"><span class="FieldInfo">
+                  Password:
+                </span></label>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text text-white bg-info">
+                    <i class="fas fa-lock"></i>
+                  </span>
                 </div>
+                <input type="password" name="Password" id="password" value="" class="form-control">
               </div>
+            </div>
 
-              <!-- Submit button -->
-              <input type="submit" name="Submit" value="Login" class="btn btn-info btn-block">
-            </form>
+            <!-- Submit button -->
+            <input type="submit" name="Submit" value="Login" class="btn btn-info btn-block">
+          </form>
 
-          </div>
         </div>
       </div>
+
+      <!-- Register btn -->
+      <div class="">
+        <a href="RegisterUser.php" class="text-success"> Do you need register?</a>
+      </div>
+
     </div>
-  </section>
+  </div>
+
+</section>
 <!--  -------->
 <!-- Footer -->
 <!-- ------ -->
