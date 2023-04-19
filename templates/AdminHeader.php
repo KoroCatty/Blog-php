@@ -50,7 +50,7 @@ Confirm_Login();
   ?>
 
   <!-- Bootstrap 4 -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+  <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous"> -->
 
   <!-- After Bootstrap -->
   <link rel="stylesheet" href="./dist/app.css">
@@ -103,7 +103,10 @@ Confirm_Login();
               <a href="Comments.php" class="nav-link">Comments</a>
             </li>
             <li class="nav-item">
-              <a href="Blog.php?page=1" target="_blank" class="nav-link">Live Blog</a>
+              <a href="Blog.php?page=1" target="_blank" class="nav-link">
+              <i class="fa-solid fa-file-export"></i>  
+              Live Blog
+            </a>
             </li>
           </ul>
 

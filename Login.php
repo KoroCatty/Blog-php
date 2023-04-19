@@ -1,14 +1,9 @@
 <?php
-// DB connection
-include_once("./DB/connect.php");
-dbConnect();
+//Header
+include("./templates/Header.php");
+?>
 
-// Functions
-require_once("Includes/Functions.php");
-
-// Sessions
-require_once("Includes/Sessions.php");
-
+<?php
 // ログイン後このページに来ようとしたらリダイレクトする (Loginページに来れるのはおかしいので)
 if(isset($_SESSION["UserId"])) {
   Redirect_to("Dashboard.php");
@@ -28,7 +23,8 @@ if (isset($_POST["Submit"])) {
 
     // 成功なのでDBとコネクト(Success)
   } else {
-    // check username & password form DB and then 格納 (関数はFunctions.phpで定義) // ex) Eggman & aaaa が格納される
+    // check username & password form DB and then 格納 
+    // (Functions.phpで定義) ex) koro & aaaa が格納される
     $Found_Account = Login_Attempt($UserName, $Password);
 
     // もし null ではない、何かの値が入っていればTRUEとみなされて実行し、IF文の中では、sessionにadminsテーブルから取得してきた各カラムを入れる
@@ -49,7 +45,7 @@ if (isset($_POST["Submit"])) {
 
       }
 
-      // SESSIONを使い, すぐ上で定義した、Eggmanの、adname を表示する
+      // SESSIONを使い, すぐ上で定義した、koroの、adname を表示する
       // $_SESSION["SuccessMessage"] = "wellcome" . " " . $_SESSION["AdminName"];
       // Redirect_to("Dashboard.php");
 
@@ -61,50 +57,6 @@ if (isset($_POST["Submit"])) {
   }
 }
 ?>
-
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-  <link rel="stylesheet" href="./dist/app.css">
-  <title>Login Page</title>
-</head>
-
-<body>
-  <!-- NAVBAR -->
-  <div style="height:10px; background:#27aae1;"></div>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container">
-      <a href="index.php" class="navbar-brand"> KAZUYA.COM</a>
-      <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarcollapseCMS">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarcollapseCMS">
-        <ul class="navbar-nav mr-auto">
-
-          <li class="nav-item">
-            <a href="index.php" class="nav-link">Home</a>
-          </li>
-          <li class="nav-item">
-            <a href="About.php" class="nav-link">About Us</a>
-          </li>
-          <li class="nav-item">
-            <a href="Blog.php" class="nav-link">Blog</a>
-          </li>
-          <li class="nav-item">
-            <a href="Contact.php" class="nav-link">Contact Us</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
-
-
 
 
 
@@ -183,40 +135,9 @@ if (isset($_POST["Submit"])) {
       </div>
     </div>
   </section>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  <!-- FOOTER -->
-  <footer class="bg-dark text-white">
-    <div class="container">
-      <div class="row">
-        <div class="col">
-          <p class="lead text-center">Theme By | Jazeb Akram | <span id="year"></span> &copy; ----All right Reserved.</p>
-          <p class="text-center small"><a style="color: white; text-decoration: none; cursor: pointer;" href="http://jazebakram.com/coupons/" target="_blank"> This site is only used for Study purpose jazebakram.com have all the rights. no one is allow to distribute copies other then <br>&trade; jazebakram.com &trade; Udemy ; &trade; Skillshare ; &trade; StackSkills</a></p>
-        </div>
-      </div>
-    </div>
-  </footer>
-  <div style="height:10px; background:#27aae1;"></div>
-  <!-- FOOTER END-->
-
-  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
-  <script>
-    $('#year').text(new Date().getFullYear());
-  </script>
-</body>
-
-</html>
+<!--  -------->
+<!-- Footer -->
+<!-- ------ -->
+<?php
+include('./templates/Footer.php');
+?>

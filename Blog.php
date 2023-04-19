@@ -5,8 +5,6 @@ include("./templates/Header.php");
 
 // Functions
 require_once("Includes/Functions.php");
-
-
 ?>
 
 

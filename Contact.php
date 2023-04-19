@@ -15,16 +15,28 @@ include("./templates/Header.php");
 
 ?>
 
-<main class="main">
-  <h1 class="mainTitle">
-  this is the Contact page!
-  </h1> 
 
+    <h2>ブログフォーム</h2>
+    <form action="blog_create.php" method="POST">
+        <p>ブログタイトル：</p>
+        <input type="text" name="title">
+        <p>ブログ本文：</p>
+        <textarea name="content" id="content" cols="30" rows="10"></textarea>
+        <br>
 
-</main>
+        <p>カテゴリ：</p>
+        <select name="category">
+            <option value="1">日常</option>
+            <option value="2">プログラミング</option>
+        </select>
+        <br>
 
-
-
+        <input type="radio" name="publish_status" value="1" checked>公開
+        <input type="radio" name="publish_status" value="2">非公開
+        <br>
+        
+        <input type="submit" value="送信">
+    </form>
 
 <?php
 // Footer

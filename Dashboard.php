@@ -4,46 +4,63 @@ include('./templates/AdminHeader.php');
 ?>
 
 
-  <!--  -------->
-  <!-- Menu ---->
-  <!-- ------ -->
-  <div class="bg-dark text-white py-3">
-    <div class="container">
-      <div class="row">
-      <h1 class="col-10 sm-col-4"><i class="fas fa-cog"></i>Dashboard</h1>
-      <div class="col-2 sm-col-8">welcome EggyMan</div>
+<?php
+// Login.phpで設定したセッションを使い格納
+$Admin = $_SESSION["UserName"];?>
 
-        <!-- Post -->
-        <div class="col-lg-3 mb-2">
-          <a href="AddNewPost.php" class="btn btn-primary btn-block">
-            <i class="fas fa-edit"></i>Add New Post
-          </a>
-        </div>
+<!--  -------->
+<!-- Menu ---->
+<!-- ------ -->
+<div class="bg-dark text-white py-3">
+  <div class="container">
+    <div class="row">
+      <h1 class="col-8 md-col-6 sm-col-4"><i class="fas fa-cog"></i>Dashboard</h1>
+      <span class="fs-5">Welcome
+        <span class="text-danger fs-3">
+            <?php echo htmlentities($Admin); ?> !!
+          </span>
+      </span>
 
-        <!-- Category -->
-        <div class="col-lg-3 mb-2">
-          <a href="Categories.php" class="btn btn-info btn-block">
-            <i class="fas fa-folder-plus"></i>Add New Category
-          </a>
-        </div>
+ 
 
-        <!-- Admin -->
-        <div class="col-lg-3 mb-2">
-          <a href="Admins.php" class="btn btn-warning btn-block">
-            <i class="fas fa-user-plus"></i>Add New Admin
-          </a>
-        </div>
+<!-- 
+      <div class="col-4 md-col-l6 sm-col-8">welcome
+        <span class="text-danger fs-3">
+          <?php // echo htmlentities($Admin); ?>
+        </span>
+      </div> -->
 
-        <!-- Comments -->
-        <div class="col-lg-3 mb-2">
-          <a href="Comments.php" class="btn btn-success btn-block">
-            <i class="fas fa-check"></i>Add New Comments
-          </a>
-        </div>
-
+      <!-- Post -->
+      <div class="col-lg-3 mb-2">
+        <a href="AddNewPost.php" class="btn btn-primary btn-block">
+          <i class="fas fa-edit"></i>Add New Post
+        </a>
       </div>
+
+      <!-- Category -->
+      <div class="col-lg-3 mb-2">
+        <a href="Categories.php" class="btn btn-info btn-block">
+          <i class="fas fa-folder-plus"></i>Add New Category
+        </a>
+      </div>
+
+      <!-- Admin -->
+      <div class="col-lg-3 mb-2">
+        <a href="Admins.php" class="btn btn-warning btn-block">
+          <i class="fas fa-user-plus"></i>Add New Admin
+        </a>
+      </div>
+
+      <!-- Comments -->
+      <div class="col-lg-3 mb-2">
+        <a href="Comments.php" class="btn btn-success btn-block">
+          <i class="fas fa-check"></i>Add New Comments
+        </a>
+      </div>
+
     </div>
   </div>
+</div>
 
 <!--  -------->
 <!-- Main Area -->

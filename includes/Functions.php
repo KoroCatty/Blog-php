@@ -72,8 +72,8 @@ function Login_Attempt($UserName, $Password) {
       $stmt = $ConnectingDB->prepare($sql);
   
       // then bind a value respectively
-      $stmt->bindValue(':userName', $UserName); // Eggman 
-      $stmt->bindValue(':passWord', $Password); // aaaa
+      $stmt->bindValue(':userName', $UserName); 
+      $stmt->bindValue(':passWord', $Password); 
       $stmt->execute();
 
        // PDOStatement->rowCount() — 直近の SQL ステートメントによって作用したDBの行数を返す // 行の数を返します。

@@ -1,18 +1,8 @@
 <?php
-// DB connection
-include_once("./DB/connect.php");
-$ConnectingDB = dbConnect();
-
-// Functions
-require_once("Includes/Functions.php");
-
-// Sessions
-require_once("Includes/Sessions.php");
-
-
-// Functions.phpで設定した、ログインしてないと入れない様にする関数
-Confirm_Login();
-
+// Header
+include('./templates/AdminHeader.php');
+?>
+<?php
 // URL bar (id=  1 )などを取得
 $SearchQueryParameter = $_GET["id"];
 ?>
@@ -78,71 +68,9 @@ if (isset($_POST["Submit"])) {
 }
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Delete Post</title>
-  <link rel="stylesheet" href="./dist/app.css">
 
-  <!-- fontawesome v6 -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-</head>
 
-<body>
-  <!--  -------->
-  <!-- Navbar -->
-  <!-- ------ -->
-
-  <header>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <div class="container">
-        <a href="Dashboard.php" class="navbar-brand">KOJIMA PET</a>
-
-        <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarcollapseCMS">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarcollapseCMS">
-
-          <ul class="navbar-nav">
-            <!-- <li class="nav-item">
-            <a href="Dashboard.php" class="nav-link">
-              <i class="fas fa-user text-success"></i> My Profile</a>
-          </li> -->
-            <li class="nav-item">
-              <a href="Dashboard.php" class="nav-link">Dashboard</a>
-            </li>
-            <li class="nav-item">
-              <a href="Posts.php" class="nav-link">Posts</a>
-            </li>
-            <li class="nav-item">
-              <a href="Categories.php" class="nav-link">Categories</a>
-            </li>
-            <li class="nav-item">
-              <a href="Admins.php" class="nav-link">Manage Admins</a>
-            </li>
-            <li class="nav-item">
-              <a href="Comments.php" class="nav-link">Comments</a>
-            </li>
-            <li class="nav-item">
-              <a href="Blog.php?page=1" target="_blank" class="nav-link">Live Blog</a>
-            </li>
-          </ul>
-
-          <ul class="navbar-nav">
-            <li class="nav-item">
-              <a href="Logout.php" class="nav-link text-danger">
-                <i class="fas fa-user-times"></i> Logout</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
-  </header>
 
   <!--  -------->
   <!-- title -->
@@ -274,24 +202,10 @@ if (isset($_POST["Submit"])) {
 
 
 
-  <!--  -------->
-  <!-- Footer -->
-  <!-- ------ -->
-  <footer class="bg-dark text-white">
-    <div class="container">
-      <div class="row">
-        <!-- <div class="col"> -->
-        <p class="lead text-center">
-          &copy;KOJIMA ---- <span id="year"></span> All Right Reserved.
-        </p>
-      </div>
-    </div>
-    <!-- </div> -->
-  </footer>
 
-
-  <script src="./dist/app.js"></script>
-
-</body>
-
-</html>
+<!--  -------->
+<!-- Footer -->
+<!-- ------ -->
+<?php
+include('./templates/Footer.php');
+?>
