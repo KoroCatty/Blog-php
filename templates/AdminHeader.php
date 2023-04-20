@@ -4,10 +4,10 @@ include_once("./DB/connect.php");
 $ConnectingDB = dbConnect();
 
 // Functions
-require_once("Includes/Functions.php");
+require_once("includes/Functions.php");
 
 // Sessions
-require_once("Includes/Sessions.php");
+require_once("includes/Sessions.php");
 
 // 自分自身のページに飛ばすものを定義し、それをセッションに格納
 // 現在のスクリプトが実行されているサーバの IP アドレスを返すもの

@@ -4,7 +4,7 @@ include("./templates/Header.php");
 
 
 // Functions
-require_once("Includes/Functions.php");
+require_once("includes/Functions.php");
 ?>
 
 
@@ -43,6 +43,9 @@ require_once("Includes/Functions.php");
       // SQL query when Search button is active (サーチボタンに入力された時のみ発動)
       // ===================================================================
       if (isset($_GET["SearchButton"])) {
+
+        global $ConnectingDB;
+
 
         // inputの name属性を取得
         $Search = $_GET["Search"];

@@ -4,10 +4,10 @@
 // dbConnect();
 
 // Functions
-require_once("Includes/Functions.php");
+require_once("includes/Functions.php");
 
 // Sessions
-require_once("Includes/Sessions.php");
+require_once("includes/Sessions.php");
 
 
 

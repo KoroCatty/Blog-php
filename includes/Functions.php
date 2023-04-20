@@ -1,6 +1,7 @@
 <!-- DB connect -->
-<?php require_once("./DB/connect.php"); 
-$ConnectingDB = dbConnect();
+<?php
+//  require_once("./DB/connect.php"); 
+// $ConnectingDB = dbConnect();
 ?>
 
 

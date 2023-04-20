@@ -24,7 +24,7 @@ if (isset($_POST["Submit"])) {
     $_SESSION["ErrorMessage"] = "All fields must be filled out"; //エラーメッセをセッションに
 
     // Functions.phpで定義しているので、ここで指定した先にリダイレクトできるようになる
-    Redirect_to("registerUser.php");
+    Redirect_to("RegisterUser.php");
 
     // 四文字以下じゃないとエラー
   // } elseif (strlen($Password) < 4) { //strlen — 文字列の長さを得る
@@ -34,12 +34,12 @@ if (isset($_POST["Submit"])) {
     // 同じでないならエラー
   } elseif ($Password !== $ConfirmPassword) { //strlen — 文字列の長さを得る
     $_SESSION["ErrorMessage"] = "Password and Confirm Password should match";
-    Redirect_to("registerUser.php");
+    // Redirect_to("RegisterUser.php");
 
     // Functions.phpから関数を輸入 $UserNameはフォームで入力された値。(Trueが返ってきたらここでエラーを起こす)
   } elseif (CheckUserNameExistsOrNot($UserName)) {
     $_SESSION["ErrorMessage"] = "UserName Exists. Try Another one";
-    Redirect_to("registerUser.php");
+    Redirect_to("RegisterUser.php");
   }
 
   // Validation 成功時  Query to insert new admin in DB when everything is fine
@@ -72,7 +72,9 @@ if (isset($_POST["Submit"])) {
     // DBとやり取りするときはエラーが起きやすいのでIF文使用
     if ($Execute) {
       $_SESSION["SuccessMessage"] =  "New Admin with the name of `$UserName`  ADDED Successfully!!!!!!";
-      Redirect_to("login.php");
+header('Location: ./Login.php'); //リダイレクト先のURLを指定する
+
+exit; //スクリプトの実行を終了する
 
       
     } else {
