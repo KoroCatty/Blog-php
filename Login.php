@@ -23,9 +23,9 @@ if (isset($_POST["Submit"])) {
 
     // 成功なのでDBとコネクト(Success)
   } else {
-    // check username & password form DB and then 格納 
-    // (Functions.phpで定義) ex) koro & aaaa が格納される
+    // check username & password form DB and then 格納 (Functions.phpで定義) 
     $Found_Account = Login_Attempt($UserName, $Password);
+
 
     // もし null ではない、何かの値が入っていればTRUEとみなされて実行し、IF文の中では、sessionにadminsテーブルから取得してきた各カラムを入れる
     if ($Found_Account) {
@@ -43,10 +43,6 @@ if (isset($_POST["Submit"])) {
       } else {
         Redirect_to("Dashboard.php");
       }
-
-      // SESSIONを使い, すぐ上で定義した、koroの、adname を表示する
-      // $_SESSION["SuccessMessage"] = "wellcome" . " " . $_SESSION["AdminName"];
-      // Redirect_to("Dashboard.php");
 
       // 1以外の数字なら失敗なのでこれが実行
     } else {

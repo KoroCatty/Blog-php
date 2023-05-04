@@ -7,13 +7,12 @@ include('./templates/Header.php');
 // Validation
 // from name="Submit" ボタンから取得
 if (isset($_POST["Submit"])) {
-  $UserName = $_POST["Username"]; // フォームの値を格納
-  $Name = $_POST["Name"]; // フォームの値を格納
-  $Password = $_POST["Password"]; // フォームの値を格納
-  $ConfirmPassword = $_POST["ConfirmPassword"]; // フォームの値を格納
 
-  // Login.php で設定したセッションを使い、動的に名前を引き出して格納
-  // $Admin = $_SESSION["UserName"];
+// フォームの値を格納
+  $UserName = $_POST["Username"]; 
+  $Name = $_POST["Name"]; 
+  $Password = $_POST["Password"]; 
+  $ConfirmPassword = $_POST["ConfirmPassword"]; 
 
   // Functions.phpで作成した、現在時刻を取得する関数を格納
   $DateTime = getTime();
@@ -21,48 +20,50 @@ if (isset($_POST["Submit"])) {
 
   // エラー時 (どれか一つでも空ならエラー)
   if (empty($UserName) || empty($Password) || empty($ConfirmPassword)) {
-    $_SESSION["ErrorMessage"] = "All fields must be filled out"; //エラーメッセをセッションに
-
-    // Functions.phpで定義しているので、ここで指定した先にリダイレクトできるようになる
-    Redirect_to("RegisterUser.php");
+    $_SESSION["ErrorMessage"] = "All fields must be filled out"; //エラーをセッションに保存
+    // header("Location: RegisterUser.php");
 
     // 四文字以下じゃないとエラー
-  // } elseif (strlen($Password) < 4) { //strlen — 文字列の長さを得る
-  //   $_SESSION["ErrorMessage"] = "password should be greater than 3 characters";
-  //   Redirect_to("Admins.php");
+    // } elseif (strlen($Password) < 4) { //strlen — 文字列の長さを得る
+    //   $_SESSION["ErrorMessage"] = "password should be greater than 3 characters";
+    //   Redirect_to("Admins.php");
 
-    // 同じでないならエラー
+    // if the password and confirm password don't match
   } elseif ($Password !== $ConfirmPassword) { //strlen — 文字列の長さを得る
-    $_SESSION["ErrorMessage"] = "Password and Confirm Password should match";
-    // Redirect_to("RegisterUser.php");
+    $_SESSION["ErrorMessage"] = "Password and Confirm Password have to match";
 
-    // Functions.phpから関数を輸入 $UserNameはフォームで入力された値。(Trueが返ってきたらここでエラーを起こす)
+
+    // Functions.phpから関数を輸入 $UserNameはフォームで入力された値。(Trueならここでエラーを起こす)
   } elseif (CheckUserNameExistsOrNot($UserName)) {
     $_SESSION["ErrorMessage"] = "UserName Exists. Try Another one";
-    Redirect_to("RegisterUser.php");
+    // header("Location: RegisterUser.php");
   }
 
-  // Validation 成功時  Query to insert new admin in DB when everything is fine
+  // Validation 成功時 
   else {
 
-    // global $ConnectingDB;
     // 上記のValidationをスルーしたのでDBに値を入れていく
     $sql = "insert into admins(datetime, username, password, adname, addedby)";
+    // $sql = "insert into admins(datetime, username, password, addedby)";
 
     // This is dummy (プレースホルダー。SQLインジェクション対策)
     $sql = $sql . "values(:dateTime, :username, :password, :adname, :adminName)";
-    // $sql = $sql . "values(aaa, aaa, aaa, aaa, aaa)";
+    // $sql = $sql . "values(:dateTime, :username, :password, :adminName)";
 
     // connect.phpから取得した関数を格納 (sql文を実行する際に必要)
     $ConnectingDB = dbConnect();
+
+    // パスワードをハッシュ化
+    $hashedPwd = password_hash($Password, PASSWORD_DEFAULT);
+
+
 
     $stmt = $ConnectingDB->prepare($sql); // sql文は prepare()を通す必要がある
     //  bindValueは,対応する名前あるいは疑問符のプレースホルダに値をバインドする
     $stmt->bindValue(':dateTime', $DateTime); // 1.dummy, 2,実際の値
     $stmt->bindValue(':username', $UserName);
-    $stmt->bindValue(':password', $Password);
+    $stmt->bindValue(':password', $hashedPwd);
     $stmt->bindValue(':adname', $Name);
-    // $stmt->bindValue(':adminName', $Admin);
     $stmt->bindValue(':adminName', $UserName);
 
     // 実行するコードを格納
@@ -71,12 +72,12 @@ if (isset($_POST["Submit"])) {
 
     // DBとやり取りするときはエラーが起きやすいのでIF文使用
     if ($Execute) {
-      $_SESSION["SuccessMessage"] =  "New Admin with the name of `$UserName`  ADDED Successfully!!!!!!";
-header('Location: ./Login.php'); //リダイレクト先のURLを指定する
+      $_SESSION["SuccessMessage"] =  "New admin $UserName added Successfully!!!!!!";
+      header('Location: ./Login.php'); //リダイレクト先のURLを指定する
 
-exit; //スクリプトの実行を終了する
+      exit; //スクリプトの実行を終了する
 
-      
+
     } else {
       $_SESSION["ErrorMessage"] = "Something went wrong!";
     }
@@ -130,17 +131,21 @@ exit; //スクリプトの実行を終了する
                   Username:
                 </span>
               </label>
-              <input class="form-control" type="text" name="Username" id="username" placeholder="Type title here" value="">
+              <input class="form-control" type="text" name="Username" id="username" placeholder="Type title here" value="<?php if( isset($UserName)) {
+                echo htmlentities($UserName);
+              } ?>">
             </div>
 
             <!-- Name -->
             <div class="form-group">
               <label for="Name">
                 <span class="FieldInfo">
-                  Name:
+                  Name (Admin Name):
                 </span>
               </label>
-              <input class="form-control" type="text" name="Name" id="Name" value="">
+              <input class="form-control" type="text" name="Name" placeholder="Admin name (Optional)" id="Name" value="<?php  if( isset($Name)) {
+                echo htmlentities($Name);
+               } ?>">
               <small class="text-warning text-muted">Optional</small>
             </div>
 
@@ -151,7 +156,9 @@ exit; //スクリプトの実行を終了する
                   Password:
                 </span>
               </label>
-              <input class="form-control" type="password" name="Password" id="Password" value="">
+              <input class="form-control" type="password" name="Password" id="Password" value="<?php if( isset($Password)) {
+                echo htmlentities($Password);
+              } ?>">
             </div>
 
             <!-- Confirm Password -->

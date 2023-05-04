@@ -58,37 +58,36 @@ function CheckUserNameExistsOrNot( $UserName ) {
 }
 
 // =======================================
-// Login.phpで使用する関数 (1 ならDBからデータを取得)
+// Login.phpで使用する関数 
+// ハッシュ化されたDB内のパスワードと、ログイン画面で入力するハッシュ化されていないパスワードを一致させる
 // =======================================
 function Login_Attempt($UserName, $Password) {
 
   // 関数の中からグローバル変数にアクセスする時は定義しないといけない
   global $ConnectingDB;
 
-      // DBの中にusername & passwordが一致しているのがあれば username & password の 1 レコード 取得
-      $sql = "select * from admins 
-      WHERE username = :userName AND password = :passWord LIMIT 1";
+  // プリペアドステートメントを定義する
+  $sql = "SELECT * FROM admins WHERE username = :userName";
+  $stmt = $ConnectingDB->prepare($sql);
+  $stmt->bindValue(':userName', $UserName);
+  $stmt->execute();
   
-      // this will use the method of prepare 
-      $stmt = $ConnectingDB->prepare($sql);
-  
-      // then bind a value respectively
-      $stmt->bindValue(':userName', $UserName); 
-      $stmt->bindValue(':passWord', $Password); 
-      $stmt->execute();
+  // ユーザー名に対応するレコードを取得する
+  // PDO::FETCH_ASSOCは、fetch()メソッドで取得したデータを、連想配列の形式で取得
+  // 結果セット内に行が存在しない場合はfalseを返す
+  $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-       // PDOStatement->rowCount() — 直近の SQL ステートメントによって作用したDBの行数を返す // 行の数を返します。
-      $Result = $stmt->rowcount();  //  1 or any other number
-  
-      // TRUE で１ならfetchを開始
-      if ($Result == 1 ) {
-        // fetch the record (returning fetched data and 格納 to $Found_Account)
-      return $Found_Account = $stmt->fetch();
-  
-      // False
-      } else {
-        return null;
-      }
+  // DBのハッシュ化パスワードを格納
+  $stored_password = $row['password'];
+
+  // DBのハッシュ化パスワードと、ログインに入力されたのが一致するかどうかをチェックする
+  if (password_verify($Password, $stored_password)) {
+    // パスワードが一致した場合は、そのユーザーの情報を返す
+    return $row;
+  } else {
+    // パスワードが一致しない場合は、nullを返す
+    return null;
+  }
 }
 
 // =======================================

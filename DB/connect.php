@@ -17,7 +17,6 @@ function dbConnect() {
   ]
   );
     // echo "<h1>DBと接続できました</h1>";
-    // $dbh = null; // 接続を終了させる？
   } catch (PDOException $er) { // errorという引数でエラー内容を受け取る
     echo $er->getMessage(); // $errorの中にある関数を取り出して表示
     exit();
