@@ -11,7 +11,7 @@ require_once("includes/Sessions.php");
 
 // 自分自身のページに飛ばすものを定義し、それをセッションに格納
 // 現在のスクリプトが実行されているサーバの IP アドレスを返すもの
-$_SESSION["TrackingURL"] = $_SERVER["PHP_SELF"];
+// $_SESSION["TrackingURL"] = $_SERVER["PHP_SELF"];
 ?>
 
 <!DOCTYPE html>
@@ -36,6 +36,8 @@ $_SESSION["TrackingURL"] = $_SERVER["PHP_SELF"];
     '/php/blog/About.php' => 'About Us｜' . $defaultTitle,
     '/php/blog/Blog.php' => 'Blog｜' . $defaultTitle,
     '/php/blog/Contact.php' => 'Contact｜' . $defaultTitle,
+    '/php/blog/Login.php' => 'Login｜' . $defaultTitle,
+    '/php/blog/RegisterUser.php' => 'Register｜' . $defaultTitle,
   ];
 
   // 「null合体演算子 (null coalescing operator)」
@@ -45,10 +47,7 @@ $_SESSION["TrackingURL"] = $_SERVER["PHP_SELF"];
   echo '<title>' . $titleTxt . '</title>';
   ?>
 
-  <!-- Bootstrap 4 -->
-  <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous"> -->
-
-  <!-- After Bootstrap -->
+  <!-- Custom CSS -->
   <link rel="stylesheet" href="./dist/app.css">
 
   <!-- fontawesome v6 -->
@@ -70,16 +69,18 @@ $_SESSION["TrackingURL"] = $_SERVER["PHP_SELF"];
   <header>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <div class="headerContainer container">
+
+      <!-- Logo -->
         <a href="index.php" class="navbar-brand">KOJIMA PET</a>
 
+        <!-- Hamburger Btn -->
         <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarcollapseCMS">
           <span class="navbar-toggler-icon"></span>
         </button>
 
+        <!-- Navbar Links -->
         <div class="collapse navbar-collapse" id="navbarcollapseCMS">
-
           <ul class="navbar-nav" style="gap:10px;">
-
             <li class="nav-item">
               <a href="index.php" class="nav-link">Home</a>
             </li>
@@ -116,7 +117,6 @@ $_SESSION["TrackingURL"] = $_SERVER["PHP_SELF"];
               ';
             } ?>
 
-
             <!-- spサイズではフォーム非表示 -->
             <li class="">
               <form action="Blog.php" class="form-inline d-none d-sm-block ml-5">
@@ -136,7 +136,6 @@ $_SESSION["TrackingURL"] = $_SERVER["PHP_SELF"];
             </li>';
             };
             ?>
-
 
             <!-- ログイン時のみ表示  (ユーザー名)-->
             <?php

@@ -28,27 +28,6 @@ $Admin = $_SESSION["UserName"];?>
         </a>
       </div>
 
-      <!-- Category -->
-      <div class="col-lg-3 mb-2">
-        <a href="Categories.php" class="btn btn-info btn-block">
-          <i class="fas fa-folder-plus"></i>Add New Category
-        </a>
-      </div>
-
-      <!-- Admin -->
-      <div class="col-lg-3 mb-2">
-        <a href="Admins.php" class="btn btn-warning btn-block">
-          <i class="fas fa-user-plus"></i>Add New Admin
-        </a>
-      </div>
-
-      <!-- Comments -->
-      <div class="col-lg-3 mb-2">
-        <a href="Comments.php" class="btn btn-success btn-block">
-          <i class="fas fa-check"></i>Add New Comments
-        </a>
-      </div>
-
     </div>
   </div>
 </div>
@@ -77,18 +56,15 @@ $Admin = $_SESSION["UserName"];?>
             // ===========================
             // Total Posts (DBに何個あるか表示)
             // ===========================
-            global $ConnectingDB;
-            // SQLのCOUNT関数は、テーブルのレコード数を数える関数です。 *（アスタリスク）を指定すると、すべてのレコードの行数をカウントします。
+            // SQLのCOUNT関数は、テーブルのレコード数を数える関数で, *（アスタリスク）を指定すると、すべてのレコードの行数をカウント
             $sql = "select COUNT(*) from posts";
 
             $stmt = $ConnectingDB->query($sql);
 
             // fetch() is extracting all the data with array format. なので array_shift()が必要。
             $TotalRows = $stmt->fetch();
-            // echo $TotalRows[0];
-            // echo $TotalRows[1];
 
-            //array_shift()は、配列の一番最初の要素を抜き出して返す関数です。 
+            //array_shift()は、配列の一番最初の要素を抜き出して返す関数
             $TotalPosts = array_shift($TotalRows);
             echo $TotalPosts;
             ?>
@@ -108,11 +84,8 @@ $Admin = $_SESSION["UserName"];?>
             // ===========================
             global $ConnectingDB;
             $sql = "select COUNT(*) from category";
-
             $stmt = $ConnectingDB->query($sql);
-
             $TotalRows = $stmt->fetch();
-
             $TotalCategories = array_shift($TotalRows);
             echo $TotalCategories;
             ?>
@@ -130,13 +103,9 @@ $Admin = $_SESSION["UserName"];?>
             // ===========================
             // Total Admins (DBに何個あるか表示)
             // ===========================
-            global $ConnectingDB;
             $sql = "select COUNT(*) from admins";
-
             $stmt = $ConnectingDB->query($sql);
-
             $TotalRows = $stmt->fetch();
-
             $TotalAdmins = array_shift($TotalRows);
             echo $TotalAdmins;
             ?>
@@ -154,13 +123,9 @@ $Admin = $_SESSION["UserName"];?>
             // ===========================
             // Total Admins (DBに何個あるか表示)
             // ===========================
-            global $ConnectingDB;
             $sql = "select COUNT(*) from comments";
-
             $stmt = $ConnectingDB->query($sql);
-
             $TotalRows = $stmt->fetch();
-
             $TotalComments = array_shift($TotalRows);
             echo $TotalComments;
             ?>
@@ -188,11 +153,9 @@ $Admin = $_SESSION["UserName"];?>
 
         <?php
         $SrNo = 0;
-        global $ConnectingDB;
 
         // postsテーブルから5件最新順で取得する
         $sql = "select * from posts ORDER BY id desc LIMIT 0, 5";
-        // $sql = "select * from posts ORDER BY id desc";
 
         $stmt = $ConnectingDB->query($sql);
 
@@ -208,43 +171,38 @@ $Admin = $_SESSION["UserName"];?>
           <!-- HTMLに出力 -->
           <tbody>
             <tr>
-              <td><?php echo htmlspecialchars($SrNo); ?></td>
-              <td><?php echo htmlspecialchars($Title); ?></td>
-              <td><?php echo htmlspecialchars($DateTime); ?></td>
-              <td><?php echo htmlspecialchars($Author); ?></td>
-
+              <td><?php echo htmlspecialchars($SrNo, ENT_QUOTES); ?></td>
+              <td><?php echo htmlspecialchars($Title,ENT_QUOTES); ?></td>
+              <td><?php echo htmlspecialchars($DateTime,ENT_QUOTES); ?></td>
+              <td><?php echo htmlspecialchars($Author,ENT_QUOTES); ?></td>
+              
               <!-- ------------------------ -->
               <!-- Approveしたコメント数を表示 -->
               <!-- ------------------------ -->
               <td>
                 <span class="badge badge-success">
                   <?php
-                  global $ConnectingDB;
-
-                  // commentsテーブル内の PostId と一致し、かつ statusが　ON のコメントのみ摘出
+                  // commentsテーブル内の PostId と一致し、かつ statusが　ON のコメントのみ摘出 数値を出力
                   $sqlApprove = "select COUNT(*) from comments WHERE post_id = '$PostId' AND status = 'ON' ";
 
                   $stmtApprove = $ConnectingDB->query($sqlApprove);
                   $RowsTotal = $stmtApprove->fetch();
 
                   // fetch()はarrayで帰ってくるので、それをstringに変換する関数
-                  $Total = array_shift($RowsTotal);
+                  $Total = array_shift($RowsTotal); // 数値
 
-                  // if the comment is 0, do not show the number
+                  // if the comment is 0, Not show the number
                   if ($Total) {
-                    echo $Total;
+                    echo htmlspecialchars( $Total, ENT_QUOTES);
                   }
                   ?>
                 </span>
-
 
                 <!-- ------------------------ -->
                 <!-- Dis-Approveしたコメント数を表示 -->
                 <!-- ------------------------ -->
                 <span class="badge text-danger">
                   <?php
-                  global $ConnectingDB;
-
                   // commentsテーブル内の PostId と一致し、かつ statusが　ON のコメントのみ摘出
                   $sqlDisApprove = "select COUNT(*) from comments WHERE post_id = '$PostId' AND status = 'OFF' ";
 
@@ -264,7 +222,7 @@ $Admin = $_SESSION["UserName"];?>
 
               <td>
                 <!-- その特定のidのブログページに飛ぶ -->
-                <a href="FullPost.php?id=<?php echo $PostId; ?>">
+                <a href="FullPost.php?id=<?php echo htmlspecialchars($PostId, ENT_QUOTES); ?>">
                   <span class="btn btn-info">Preview</span>
                 </a>
               </td>
@@ -274,21 +232,8 @@ $Admin = $_SESSION["UserName"];?>
         <?php endwhile; ?>
       </table>
     </div>
-
-
-
-
-
-
-
-
-
   </div>
 </section>
-
-
-
-
 <!--  -------->
 <!-- Footer -->
 <!-- ------ -->

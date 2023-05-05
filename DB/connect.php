@@ -16,15 +16,13 @@ function dbConnect() {
         // PDO::ATTR_EMULATE_PREPARES => false,
   ]
   );
-    // echo "<h1>DBと接続できました</h1>";
+    // echo "<h1>Connected DB </h1>";
   } catch (PDOException $er) { // errorという引数でエラー内容を受け取る
     echo $er->getMessage(); // $errorの中にある関数を取り出して表示
     exit();
   }
   return $dbh; // ここに欲しいものを返す。この関数で要るものは $dbh
 }
-
-
 
 // display_errorsをONに設定
 // ini_set('display_errors', 1);

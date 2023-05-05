@@ -22,9 +22,12 @@ if (isset($_POST["Submit"])) {
     // 成功なのでDBとコネクト(Success)
   } else {
     // check username & password form DB + save 
-    // (Functions.php) 
+    // (DEFINED IN: Functions.php) 
     $Found_Account = Login_Attempt($UserName, $Password);
 
+    // ===================================================
+    // Login状態を確認するセッションを定義し、各adminページで使用
+    // ===================================================
     // もし null ではない、何かの値が入っていればTRUEとみなされて実行し、IF文の中では、sessionにadminsテーブルから取得してきた各カラムを入れる
     if ($Found_Account) {
       // adminsテーブルのカラムを、左側のSESSIONの自由に設定した名前に格納
