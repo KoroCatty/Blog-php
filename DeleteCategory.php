@@ -9,19 +9,13 @@ require_once("includes/Functions.php");
 // Sessions
 require_once("includes/Sessions.php");
 ?>
-
-
 <?php 
 // Approve ボタンが押されて　id があれば実行される
 if(isset($_GET["id"])) { 
 $SearchQueryParameter = $_GET["id"];
-global $ConnectingDB; // 関数内からアクセスするため
-
-
 
 // DELETE a COMMENT
 $sql = "DELETE FROM category WHERE id ='$SearchQueryParameter'";
-
 $Execute = $ConnectingDB->query($sql);
 
 // もしexcuteできたなら実行

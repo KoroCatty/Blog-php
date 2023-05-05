@@ -35,11 +35,11 @@ function CheckUserNameExistsOrNot( $UserName ) {
   $sql = "select username from admins WHERE username = :userName";
   $stmt = $ConnectingDB->prepare($sql);
 
-  // $UserName
+  // Binding values to placeholder
   $stmt->bindValue(':userName', $UserName);
   $stmt->execute();
 
-  // PDOStatement->rowCount() — 直近の SQL ステートメントによって作用したDBの行数を返す // 行の数を返します。
+  // PDOStatement->rowCount() — 直近の SQL ステートメントによって作用したDBの行数を返す (行の数を返す
   $Result = $stmt->rowcount(); // １か、０を返す
 
   // あったらtrueを返し、Admins.php内でエラーを起こさせる (これでvalidationできる)

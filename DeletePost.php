@@ -1,7 +1,6 @@
-<?php
-// Header
-include('./templates/AdminHeader.php');
-?>
+<!-- Header -->
+<?php include('./templates/AdminHeader.php');?>
+
 <?php
 // URL bar (id=  1 )などを取得
 $SearchQueryParameter = $_GET["id"];
@@ -11,11 +10,6 @@ $SearchQueryParameter = $_GET["id"];
 // =========================================
 // Fetching Existing Content to delete easily
 // =========================================
-global $ConnectingDB;
-
-// Get URL parameter from URL Bar
-// $SearchQueryParameter = $_GET["id"];  // id=8 などを取得
-
 // SQL文でデータをDBから取得
 $sql = "select * from posts where id = '$SearchQueryParameter' ";
 $stmt = $ConnectingDB->query($sql);
@@ -27,24 +21,17 @@ while ($DataRows = $stmt->fetch()) {
   $ImageToBeDeleted = $DataRows["image"];
   $PostToBeDeleted = $DataRows["post"];
 }
-
-
-
-// echo $ImageToBeUpdated;
 ?>
 
 <?php
 if (isset($_POST["Submit"])) {
 
   // Query to Delete Post in DB when everything is fine 
-  global $ConnectingDB;
+  // global $ConnectingDB;
 
   // idと一致するものだけ消す
   $sql = "DELETE FROM posts WHERE id = $SearchQueryParameter";
-
   $Execute = $ConnectingDB->query($sql);
-
-  // var_dump($Execute); // Debugging
 
   // DBとやり取りするときはエラーが起きやすいのでIF文使用
   if ($Execute) {
@@ -56,22 +43,15 @@ if (isset($_POST["Submit"])) {
     unlink($Target_Path_To_DELETE_Image);
 
     // 一番最後のIDを表示させる lastInsertID()関数をDBを通して実行
-    $_SESSION["SuccessMessage"] = "あなたのPost with id : " . $ConnectingDB->lastInsertID() . "DELETED Successfully!!!!!!";
-
-    // echo SuccessMessage();
-
+    $_SESSION["SuccessMessage"] = "Post deleted successfully!";
     Redirect_to("Posts.php");
+    
   } else {
     $_SESSION["ErrorMessage"] = "Something went wrong!";
     Redirect_to("Posts.php");
   }
 }
 ?>
-
-
-
-
-
   <!--  -------->
   <!-- title -->
   <!-- ------ -->
@@ -84,28 +64,22 @@ if (isset($_POST["Submit"])) {
       </div>
     </div>
   </div>
-
   <!--  -------->
   <!-- Main Area -->
   <!-- ------ -->
   <section class="container py-2 mb-4 mainAreaCat">
     <div class="row categoryMain">
       <div class="offset-lg-1 col-lg-10 categoryMain__item">
-
-
         <?php
         // ここでフォーム送信時にどちらかを表示させる
         echo ErrorMessage();
         echo SuccessMessage();
-
-
         ?>
 
         <!-- enctype save the image to the folder wherever you want  -->
         <!-- enctype属性は、フォームの送信データのMIMEタイプを設定するための属性です。 属性値にMIMEタイプを示す文字列を指定することで、フォームのデータが送信される際に用いられるMIMEタイプを設定することができます。 -->
         <form action="DeletePost.php?id=<?php echo htmlentities($SearchQueryParameter); ?>" class="" method="post" enctype="multipart/form-data">
           <div class="card mb-3">
-
             <div class="card-body bg-dark">
 
               <!-- ----------------------- -->
@@ -130,11 +104,8 @@ if (isset($_POST["Submit"])) {
 
                 <!-- DBにある現在のカテゴリーを表示 -->
                 <span class="existCategory"><?php echo htmlentities($CategoryToBeDeleted); ?></span>
-
                 <br />
-
               </div>
-
 
               <!-- ----------------------- -->
               <!-- Image File  -->
@@ -146,10 +117,6 @@ if (isset($_POST["Submit"])) {
                 <img src="./Uploads/<?php echo htmlentities($ImageToBeDeleted); ?>" alt="" class="editImg mb-1">
 
                 <div class="custom-file">
-                  <!-- <input type="File" name="Image" id="imageSelect" value="" class="custom-file-input"> -->
-
-                  <br />
-
                   <!-- ----------------------- -->
                   <!-- POST Content(本文) -->
                   <!-- ----------------------- -->
@@ -161,15 +128,12 @@ if (isset($_POST["Submit"])) {
 
                   <!-- DBにある現在の本文を表示 -->
                   <textarea disabled class="form-control" name="PostDescription" id="Post" cols="30" rows="10"><?php echo htmlentities($PostToBeDeleted); ?></textarea>
-
                 </div>
               </div>
 
               <div class="form-group">
                 <label for="Post" class="custom-file-label">Select Image</label>
-
               </div>
-
 
               <div class="row">
                 <div class="col-lg-6 mb-2">
@@ -177,32 +141,19 @@ if (isset($_POST["Submit"])) {
                     <i class="fas fa-arrow-left"></i>Back To Dashboard
                   </a>
                 </div>
-                <div class="col-lg-6 mb-2">
 
+                <div class="col-lg-6 mb-2">
                   <button class="btn btn-danger btn-block" type="submit" name="Submit">
                     <i class="fas fa-trash"></i>Delete
                   </button>
-
                 </div>
               </div>
             </div>
-
           </div>
         </form>
       </div>
     </div>
   </section>
-
-
-
-
-
-
-
-
-
-
-
 <!--  -------->
 <!-- Footer -->
 <!-- ------ -->

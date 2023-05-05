@@ -2,12 +2,9 @@
 //Header
 include("./templates/Header.php");
 
-
 // Functions
 require_once("includes/Functions.php");
 ?>
-
-
 
 <!-- Contents -->
 <div class="container">
@@ -28,7 +25,6 @@ require_once("includes/Functions.php");
       }
       ?>
 
-
       <?php
       // Session.phpから取得したエラーを表示する。ここでechoしとかないと、FullPost.phpで起こしたエラーが表示されない
       echo ErrorMessage();
@@ -37,15 +33,11 @@ require_once("includes/Functions.php");
 
       <!-- Fetch Posts From DB -->
       <?php
-      global $ConnectingDb;
 
       // ===================================================================
       // SQL query when Search button is active (サーチボタンに入力された時のみ発動)
       // ===================================================================
       if (isset($_GET["SearchButton"])) {
-
-        global $ConnectingDB;
-
 
         // inputの name属性を取得
         $Search = $_GET["Search"];
@@ -81,7 +73,6 @@ require_once("includes/Functions.php");
 
         $sql = "select * from posts ORDER BY id desc LIMIT $ShowPostFrom, 4";
         $stmt = $ConnectingDB->query($sql);
-
         // =====================================================================
         // Query when Category is active in URL Tab
         // =====================================================================
@@ -95,7 +86,6 @@ require_once("includes/Functions.php");
         $stmt->bindValue(":cat", $Category);
         $stmt->execute();
       }
-
       // =====================================================================
       // The default SQL query (blog記事を一覧表示) (どんなURLを入力してもこれが実行)
       // =====================================================================
@@ -113,21 +103,11 @@ require_once("includes/Functions.php");
 
         $sql = "select * from posts ORDER BY id desc LIMIT $ShowPostFrom, 4";
         $stmt = $ConnectingDB->query($sql);
-
-
-
-        // 新着順で表示
-        // $sql = "select * from posts ORDER BY id desc LIMIT 0, 3";
-
-        // 指定したSQL文をデータベースに対して発行してくれる役割を持っています。
-        // queryメソッドを使用して、sqlをデータベースに届けなければいけないのです。
-        // sql文を実行する時は必ずDBにアクセスせなあかん
-        // $stmt = $ConnectingDB->query($sql);
       }
 
-
       // DB のpostsテーブルの各カラムをループで取得
-      // fetch()はPDOオブジェクトでDBからデータを取り出した際に「配列の形式を指定できる」ことを指します。 $DataRowsはこのwhile文内でのみ使用可能
+      // fetch()はPDOオブジェクトでDBからデータを取り出した際に「配列の形式を指定できる
+      //  $DataRowsはこのwhile文内でのみ使用可能
       while ($DataRows = $stmt->fetch()) :
         $PostId = $DataRows["id"];
         $DateTime = $DataRows["datetime"];
@@ -137,9 +117,6 @@ require_once("includes/Functions.php");
         $Image = $DataRows["image"];
         $PostDescription = $DataRows["post"];
       ?>
-
-
-
         <!-- ---------------------------------- -->
         <!-- display the data extracted from DB -->
         <!-- ---------------------------------- -->
@@ -149,12 +126,13 @@ require_once("includes/Functions.php");
           <div class="card-body">
             <h4 class="card-title"><?php echo htmlentities($PostTitle); ?></h4>
             <p class="text-muted">Category: <?php echo htmlspecialchars($Category); ?> & Written by
-            <span style="font-size:1.6rem; color:blue">
-             <?php echo htmlentities($Admin); ?> 
-             </span>
-            On 
-            <span style="font-size:1.2rem; color:black">
-            <?php echo htmlentities($DateTime); ?></p>
+              <span style="font-size:1.6rem; color:blue">
+                <?php echo htmlentities($Admin); ?>
+              </span>
+              On
+              <span style="font-size:1.2rem; color:black">
+                <?php echo htmlentities($DateTime); ?>
+            </p>
             </span>
             <!-- ------------------------ -->
             <!-- Dis-Approveしたコメント数を表示 -->
@@ -215,10 +193,9 @@ require_once("includes/Functions.php");
             <?php endif; ?>
           <?php endif; ?>
 
-
           <!-- Pagination  ----------------------->
           <?php
-          global $ConnectingDB;
+          // global $ConnectingDB;
 
           // COUNT(*)はテーブル内の全ての数を返す
           $sql = "select COUNT(*) FROM posts";
@@ -227,13 +204,13 @@ require_once("includes/Functions.php");
 
           //array_shift() は、array の最初の値を取り出して返します。配列 array は、要素一つ分だけ短くなり、全ての要素は前にずれます。 
           $TotalPosts = array_shift($RowPagination);
-          echo $TotalPosts . "<br>"; // array9 (全post数)
+          // echo $TotalPosts . "<br>"; // array9 (全post数)
 
           $PostPagination = $TotalPosts / 4; // 2.25  (9 / 4 = 2.25)
 
           // 小数点を繰り上げ
           $PostPagination = ceil($PostPagination);
-          echo $PostPagination; // 3
+          // echo $PostPagination; // 3
 
           // pagination(3)に対してループをかける　３つのページネーションを表示
           for ($i = 1; $i <= $PostPagination; $i++) : ?>
@@ -271,7 +248,6 @@ require_once("includes/Functions.php");
           <?php endif; ?>
         </ul>
       </nav>
-
     </div>
     <!-- Main Area End -->
 
@@ -376,17 +352,6 @@ require_once("includes/Functions.php");
   </div>
 </div>
 
-<!-- Contents END -->
-
-
-
-
-
-
-<br>
-
-
-<?php
-// Footer
-include("./templates/Footer.php")
-?>
+<?php 
+// Footer 
+include("./templates/Footer.php")?>

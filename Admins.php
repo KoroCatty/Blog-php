@@ -2,15 +2,14 @@
 // Header
 include('./templates/AdminHeader.php');
 ?>
-
 <?php
-// Validation
-// from name="Submit" ボタンから取得
 if (isset($_POST["Submit"])) {
-  $UserName = $_POST["Username"]; // フォームの値を格納
-  $Name = $_POST["Name"]; // フォームの値を格納
-  $Password = $_POST["Password"]; // フォームの値を格納
-  $ConfirmPassword = $_POST["ConfirmPassword"]; // フォームの値を格納
+
+  // フォームの値を格納
+  $UserName = $_POST["Username"];
+  $Name = $_POST["Name"];
+  $Password = $_POST["Password"];
+  $ConfirmPassword = $_POST["ConfirmPassword"];
 
   // Login.php で設定したセッションを使い、動的に名前を引き出して格納
   $Admin = $_SESSION["UserName"];
@@ -18,33 +17,28 @@ if (isset($_POST["Submit"])) {
   // Functions.phpで作成した、現在時刻を取得する関数を格納
   $DateTime = getTime();
 
-
   // エラー時 (どれか一つでも空ならエラー)
   if (empty($UserName) || empty($Password) || empty($ConfirmPassword)) {
-    $_SESSION["ErrorMessage"] = "All fields must be filled out"; //エラーメッセをセッションに
 
-    // Functions.phpで定義しているので、ここで指定した先にリダイレクトできるようになる
-    Redirect_to("Admins.php");
+    // session.phpで定義
+    $_SESSION["ErrorMessage"] = "All fields must be filled out";
 
-    // 四文字以下じゃないとエラー
+    // 四文字以下だとエラー
   } elseif (strlen($Password) < 4) { //strlen — 文字列の長さを得る
     $_SESSION["ErrorMessage"] = "password should be greater than 3 characters";
-    Redirect_to("Admins.php");
 
     // 同じでないならエラー
   } elseif ($Password !== $ConfirmPassword) { //strlen — 文字列の長さを得る
     $_SESSION["ErrorMessage"] = "Password and Confirm Password should match";
-    Redirect_to("Admins.php");
 
-    // Functions.phpから関数を輸入 $UserNameはフォームで入力された値。(Trueが返ってきたらここでエラーを起こす)
+    // Functions.phpから関数を輸入 $UserNameはフォームで入力された値。(Trueが返ってきたらエラー)
   } elseif (CheckUserNameExistsOrNot($UserName)) {
     $_SESSION["ErrorMessage"] = "UserName Exists. Try Another one";
-    Redirect_to("Admins.php");
+    // Redirect_to("Admins.php");
   }
 
-  // 成功時  Query to insert new admin in DB when everything is fine
+  // 成功時  Query to insert new admin to DB
   else {
-    // global $ConnectingDB;
     // 上記のValidationをスルーしたのでDBに値を入れていく
     $sql = "insert into admins(datetime, username, password, adname, addedby)";
 
@@ -65,9 +59,6 @@ if (isset($_POST["Submit"])) {
     // 実行するコードを格納
     $Execute = $stmt->execute();
 
-    // var_dump($Execute); // Debugging
-
-
     // DBとやり取りするときはエラーが起きやすいのでIF文使用
     if ($Execute) {
       $_SESSION["SuccessMessage"] =  "New Admin with the name of $Name  ADDED Successfully!!!!!!";
@@ -80,11 +71,6 @@ if (isset($_POST["Submit"])) {
   }
 }
 ?>
-
-
-
-
-
 <!--  -------->
 <!-- header -->
 <!-- ------ -->
@@ -97,15 +83,12 @@ if (isset($_POST["Submit"])) {
     </div>
   </div>
 </header>
-
 <!--  -------->
 <!-- Main Area -->
 <!-- ------ -->
 <section class="container py-2 mb-4 mainAreaCat">
   <div class="row categoryMain">
     <div class="offset-lg-1 col-lg-10 categoryMain__item">
-
-
       <?php
       // ここでフォーム送信時にどちらかを表示させる
       echo ErrorMessage();
@@ -118,7 +101,6 @@ if (isset($_POST["Submit"])) {
           </div>
 
           <div class="card-body bg-dark">
-
             <!-- Username -->
             <div class="form-group">
               <label for="username">
@@ -126,7 +108,9 @@ if (isset($_POST["Submit"])) {
                   Username:
                 </span>
               </label>
-              <input class="form-control" type="text" name="Username" id="username" placeholder="Type title here" value="">
+              <input class="form-control" type="text" name="Username" id="username" placeholder="Type title here" value="<?php if( (isset($UserName))){
+                echo htmlspecialchars($UserName, ENT_QUOTES);
+              } ?>">
             </div>
 
             <!-- Name -->
@@ -136,7 +120,9 @@ if (isset($_POST["Submit"])) {
                   Name:
                 </span>
               </label>
-              <input class="form-control" type="text" name="Name" id="Name" value="">
+              <input class="form-control" type="text" name="Name" id="Name" value="<?php if( (isset($Name))){
+                 echo htmlspecialchars($Name, ENT_QUOTES);
+              } ?>">
               <small class="text-warning text-muted">Optional</small>
             </div>
 
@@ -147,7 +133,9 @@ if (isset($_POST["Submit"])) {
                   Password:
                 </span>
               </label>
-              <input class="form-control" type="password" name="Password" id="Password" value="">
+              <input class="form-control" type="password" name="Password" id="Password" value="<?php if( (isset($Password))){
+                 echo htmlspecialchars($Password, ENT_QUOTES);
+              } ?>">
             </div>
 
             <!-- Confirm Password -->
@@ -160,8 +148,7 @@ if (isset($_POST["Submit"])) {
               <input class="form-control" type="password" name="ConfirmPassword" id="ConfirmPassword" value="">
             </div>
 
-
-
+            <!-- Buttons -->
             <div class="row">
               <div class="col-lg-6 mb-2">
                 <a href="Dashboard.php" class="btn btn-warning">
@@ -169,20 +156,18 @@ if (isset($_POST["Submit"])) {
                 </a>
               </div>
               <div class="col-lg-6 mb-2">
-
                 <button class="btn btn-success btn-block" type="submit" name="Submit">
                   <i class="fas fa-check"></i>Publish
                 </button>
-
               </div>
             </div>
           </div>
-
         </div>
       </form>
 
-
-      <!--  -->
+      <!-- ================ -->
+      <!--  EXISTING ADMINS -->
+      <!-- ================ -->
       <h2>Existing Admins</h2>
       <table class="table table-striped table-hover">
         <thead class="thead-dark">
@@ -196,10 +181,7 @@ if (isset($_POST["Submit"])) {
           </tr>
         </thead>
         <?php
-        // 関数内からグローバル変数にアクセスする際に必要
-        global $ConnectingDB;
-
-        // statusが OFFのやつのみ を最新順で取得する
+        // statusが OFFのものだけを最新順で取得する
         $sql = "select * from admins  ORDER BY id desc ";
         $Execute = $ConnectingDB->query($sql);
 
@@ -214,43 +196,25 @@ if (isset($_POST["Submit"])) {
           $AdminName = $DataRows["adname"];
           $AddedBy = $DataRows["addedby"];
           $SrNo++; // increment
-
         ?>
-
           <!-- HTMLに出力（テーブル内） -->
           <tbody>
             <tr>
-              <td><?php echo htmlentities($SrNo); ?></td>
-              <td><?php echo htmlentities($DateTime); ?></td>
-              <td><?php echo htmlentities($AdminUsername); ?></td>
-              <td><?php echo htmlentities($AdminName); ?></td>
-              <td><?php echo htmlentities($AddedBy); ?></td>
+              <td><?php echo htmlspecialchars($SrNo, ENT_QUOTES); ?></td>
+              <td><?php echo htmlspecialchars($DateTime, ENT_QUOTES); ?></td>
+              <td><?php echo htmlspecialchars($AdminUsername, ENT_QUOTES); ?></td>
+              <td><?php echo htmlspecialchars($AdminName, ENT_QUOTES); ?></td>
+              <td><?php echo htmlspecialchars($AddedBy, ENT_QUOTES); ?></td>
 
               <!-- Delete btn -->
               <td><a class="btn btn-danger" href="DeleteAdmin.php?id=<?php echo $AdminId; ?>">Delete</a></td>
-
             </tr>
-
           </tbody>
         <?php endwhile; ?>
       </table>
-
-
-
-
-
     </div>
   </div>
 </section>
-
-
-
-
-
-
-
-
-
 <!--  -------->
 <!-- Footer -->
 <!-- ------ -->

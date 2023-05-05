@@ -8,7 +8,7 @@ include('./templates/AdminHeader.php');
     <div class="container">
       <div class="row">
         <div class="col-md-12">
-          <h1><i class="fas fa-comments" style="color:#27aae1;"></i> Manage Comments</h1>
+          <h1><i class="fas fa-comments" style="color:yellow;"></i> Manage Comments</h1>
         </div>
       </div>
     </div>
@@ -23,10 +23,6 @@ include('./templates/AdminHeader.php');
 
     <div class="row">
       <div class="col-lg-12">
-
-
-
-
 
         <!--  --------------->
         <!-- Un-Approved  -->
@@ -45,18 +41,10 @@ include('./templates/AdminHeader.php');
               <th>Details</th>
             </tr>
           </thead>
-
-
-
           <?php
-          // 関数内からグローバル変数にアクセスする際に必要
-          global $ConnectingDB;
-
-          // statusが OFFのやつのみ を最新順で取得する
+          // statusが OFFのものだけを最新順で取得する
           $sql = "select * from comments where status = 'OFF' ORDER BY id desc ";
           $Execute = $ConnectingDB->query($sql);
-
-          // 
           $SrNo = 0;
 
           // DB のカラムをループで取り出す
@@ -76,7 +64,6 @@ include('./templates/AdminHeader.php');
               $DateTimeOfComment = mb_substr($DateTimeOfComment, 0, 26) . '...';
             }
           ?>
-
             <!-- HTMLに出力（テーブル内） -->
             <tbody>
               <tr>
@@ -85,24 +72,16 @@ include('./templates/AdminHeader.php');
                 <td><?php echo htmlentities($DateTimeOfComment); ?></td>
                 <td><?php echo htmlentities($CommentContent); ?></td>
 
-                <!-- postsテーブルのidとこの$CommentIdはLovebirdの関係で繋がっている  -->
-                <td><a class="btn btn-success" href="ApproveComments.php?id=<?php echo $CommentId; ?>">Approve</a></td>
+                <!-- postsテーブルのidと,$CommentIdはLovebirdの関係  -->
+                <td><a class="btn btn-success" href="ApproveComments.php?id=<?php echo htmlspecialchars($CommentId, ENT_QUOTES); ?>">Approve</a></td>
 
-                <td><a class="btn btn-danger" href="DeleteComments.php?id=<?php echo $CommentId; ?>">Delete</a></td>
+                <td><a class="btn btn-danger" href="DeleteComments.php?id=<?php echo htmlspecialchars($CommentId, ENT_QUOTES); ?>">Delete</a></td>
 
-                <td><a class="btn btn-primary" href="FullPost.php?id=<?php echo $CommentPostId; ?>" target="_blank">Live Preview</a></td>
+                <td><a class="btn btn-primary" href="FullPost.php?id=<?php echo htmlspecialchars($CommentPostId); ?>" target="_blank">Live Preview</a></td>
               </tr>
-
             </tbody>
           <?php endwhile; ?>
         </table>
-
-
-
-
-
-
-
 
         <!--  ------------------->
         <!-- Approved Comments -->
@@ -120,18 +99,10 @@ include('./templates/AdminHeader.php');
               <th>Details</th>
             </tr>
           </thead>
-
-
-
           <?php
-          // 関数内からグローバル変数にアクセスする際に必要
-          global $ConnectingDB;
-
           // statusが OFFのやつのみ を最新順で取得する
           $sql = "select * from comments where status = 'ON' ORDER BY id desc ";
           $Execute = $ConnectingDB->query($sql);
-
-          // 
           $SrNo = 0;
 
           // DB のカラムをループで取り出す
@@ -160,26 +131,19 @@ include('./templates/AdminHeader.php');
                 <td><?php echo htmlentities($DateTimeOfComment); ?></td>
                 <td><?php echo htmlentities($CommentContent); ?></td>
 
-                <!-- postsテーブルのidとこの$CommentIdはLovebirdの関係で繋がっている  -->
-                <td><a class="btn btn-warning" href="DisApproveComments.php?id=<?php echo $CommentId; ?>">Dis-Approve</a></td>
+                <!-- postsテーブルのidとこの$CommentIdはLovebirdの関係 -->
+                <td><a class="btn btn-warning" href="DisApproveComments.php?id=<?php echo htmlspecialchars($CommentId, ENT_QUOTES); ?>">Dis-Approve</a></td>
 
-                <td><a class="btn btn-danger" href="DeleteComments.php?id=<?php echo $CommentId; ?>">Delete</a></td>
+                <td><a class="btn btn-danger" href="DeleteComments.php?id=<?php echo htmlspecialchars($CommentId, ENT_QUOTES); ?>">Delete</a></td>
 
-                <td><a class="btn btn-primary" href="FullPost.php?id=<?php echo $CommentPostId; ?>" target="_blank">Live Preview</a></td>
+                <td><a class="btn btn-primary" href="FullPost.php?id=<?php echo htmlspecialchars($CommentPostId, ENT_QUOTES); ?>" target="_blank">Live Preview</a></td>
               </tr>
-
             </tbody>
           <?php endwhile; ?>
         </table>
       </div>
     </div>
   </section>
-
-
-
-
-
-
 <!--  -------->
 <!-- Footer -->
 <!-- ------ -->
