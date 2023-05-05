@@ -6,12 +6,76 @@ include("./templates/Header.php");
 require_once("includes/Functions.php");
 ?>
 
+<main class="blogContainer">
+
+<div class="blogContainerHero">
+  <div class="blogContainerHero__item">
+    <img src="./src/img/vertical-cat.png" alt="" class="blogContainerHero__img">
+  </div>
+  <div class="blogContainerHero__item">
+    <img src="./src/img/blog_hero.png" alt="" class="blogContainerHero__img">
+  </div>
+  <div class="blogContainerHero__item">
+    <img src="./src/img/verical-cat2.png" alt="" class="blogContainerHero__img">
+  </div>
+</div>
+
+
+
+
+
+
+<!-- ------------ -->
+<!-- Recent Posts -->
+<!-- ------------ -->
+<div class="recentPost">
+        <div class="card-header bg-info text-white">
+          <h2 class="lead">Recent Posts</h2>
+        </div>
+
+        <div class="recentPostContainer">
+          <?php
+
+          // postsテーブルから4件取得
+          $sql = "select * from posts ORDER BY id desc LIMIT 0, 4 ";
+          $stmt = $ConnectingDB->query($sql);
+
+          while ($DataRows = $stmt->fetch()) :
+            $Id = $DataRows['id'];
+            $Title = $DataRows['title'];
+            $DateTime = $DataRows['datetime'];
+            $Image = $DataRows['image'];
+          ?>
+
+            <div class="recentPostContainer__item">
+              <img src="./Uploads/<?php echo htmlspecialchars($Image, ENT_QUOTES); ?>" alt="" class="d-block img-fluid align-self-start">
+
+              <!-- postsテーブルの各記事のIDのURLに飛ぶ -->
+              <div class="media-body ml-2">
+                <a href="FullPost.php?id=<?php echo htmlspecialchars($Id, ENT_QUOTES); ?>" target="_blank">
+                  <h6 class="lead"><?php echo htmlspecialchars($Title, ENT_QUOTES); ?></h6>
+                </a>
+              </div>
+            </div>
+            <hr />
+          <?php endwhile; ?>
+
+        </div>
+      </div>
+
+
+
+
+
+
+
+
 <!-- Contents -->
-<div class="container">
+<div class="container ">
   <div class="row mt-4">
 
     <!-- Main Area Start -->
-    <div class="col-sm-8" style="min-height: 40px; background: grey;">
+    <div class="col-sm-8" style="min-height: 40px;">
       <h1>The Complete Responsive CMS Blog</h1>
 
       <?php
@@ -117,6 +181,22 @@ require_once("includes/Functions.php");
         $Image = $DataRows["image"];
         $PostDescription = $DataRows["post"];
       ?>
+
+        <!-- ---------------------------------- -->
+        <!-- HTML -->
+        <!-- ---------------------------------- -->
+
+
+
+
+
+
+
+
+
+
+
+
         <!-- ---------------------------------- -->
         <!-- display the data extracted from DB -->
         <!-- ---------------------------------- -->
@@ -175,6 +255,21 @@ require_once("includes/Functions.php");
         </div>
       <?php endwhile; ?>
       <!-- Card End -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
       <!--  --------------------------------------------->
       <!-- pagination -->
@@ -250,6 +345,13 @@ require_once("includes/Functions.php");
       </nav>
     </div>
     <!-- Main Area End -->
+
+
+
+
+
+
+
 
     <!-- --------------------------- -->
     <!-- Side Area Start -->
@@ -351,7 +453,7 @@ require_once("includes/Functions.php");
     <!-- Side Area End -->
   </div>
 </div>
-
+</main>
 <?php 
 // Footer 
 include("./templates/Footer.php")?>

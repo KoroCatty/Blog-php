@@ -71,7 +71,10 @@ require_once("includes/Sessions.php");
       <div class="headerContainer container">
 
       <!-- Logo -->
-        <a href="index.php" class="navbar-brand">KOJIMA PET</a>
+      <a href="index.php" class="navbar-brand">
+          <img src="./src/img/logo.png" alt="logo" class="headerLogo">
+          KOJIMA PET
+        </a>
 
         <!-- Hamburger Btn -->
         <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarcollapseCMS">

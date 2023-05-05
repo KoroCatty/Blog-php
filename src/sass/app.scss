@@ -4,6 +4,8 @@
 
 @use 'loading' as *;
 
+@use 'blog' as *;
+
 // Import all of Bootstrap's CSS
 @import "~bootstrap/scss/bootstrap";
 
@@ -114,6 +116,12 @@ body {
 
   @media screen and (max-width: 1200px) and (min-width: 992px) {
     display: block !important;
+  }
+
+  .headerLogo {
+    width: 40px;
+    height: 40px;
+    margin-right: 8px;
   }
 }
 
