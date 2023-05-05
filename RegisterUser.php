@@ -4,7 +4,6 @@ include('./templates/Header.php');
 ?>
 
 <?php
-// Validation
 // from name="Submit" ボタンから取得
 if (isset($_POST["Submit"])) {
 
@@ -24,9 +23,9 @@ if (isset($_POST["Submit"])) {
     // header("Location: RegisterUser.php");
 
     // 四文字以下じゃないとエラー
-    // } elseif (strlen($Password) < 4) { //strlen — 文字列の長さを得る
-    //   $_SESSION["ErrorMessage"] = "password should be greater than 3 characters";
-    //   Redirect_to("Admins.php");
+    } elseif (strlen($Password) < 4) { //strlen — 文字列の長さを得る
+      $_SESSION["ErrorMessage"] = "password should be greater than 3 characters";
+      // Redirect_to("Admins.php");
 
     // if the password and confirm password don't match
   } elseif ($Password !== $ConfirmPassword) { //strlen — 文字列の長さを得る
@@ -39,16 +38,14 @@ if (isset($_POST["Submit"])) {
     // header("Location: RegisterUser.php");
   }
 
-  // Validation 成功時 
+  //  成功時 
   else {
 
     // 上記のValidationをスルーしたのでDBに値を入れていく
     $sql = "insert into admins(datetime, username, password, adname, addedby)";
-    // $sql = "insert into admins(datetime, username, password, addedby)";
 
     // This is dummy (プレースホルダー。SQLインジェクション対策)
     $sql = $sql . "values(:dateTime, :username, :password, :adname, :adminName)";
-    // $sql = $sql . "values(:dateTime, :username, :password, :adminName)";
 
     // connect.phpから取得した関数を格納 (sql文を実行する際に必要)
     $ConnectingDB = dbConnect();
@@ -57,8 +54,8 @@ if (isset($_POST["Submit"])) {
     $hashedPwd = password_hash($Password, PASSWORD_DEFAULT);
 
 
-
     $stmt = $ConnectingDB->prepare($sql); // sql文は prepare()を通す必要がある
+    
     //  bindValueは,対応する名前あるいは疑問符のプレースホルダに値をバインドする
     $stmt->bindValue(':dateTime', $DateTime); // 1.dummy, 2,実際の値
     $stmt->bindValue(':username', $UserName);
@@ -69,27 +66,17 @@ if (isset($_POST["Submit"])) {
     // 実行するコードを格納
     $Execute = $stmt->execute();
 
-
     // DBとやり取りするときはエラーが起きやすいのでIF文使用
     if ($Execute) {
       $_SESSION["SuccessMessage"] =  "New admin $UserName added Successfully!!!!!!";
       header('Location: ./Login.php'); //リダイレクト先のURLを指定する
-
       exit; //スクリプトの実行を終了する
-
-
     } else {
       $_SESSION["ErrorMessage"] = "Something went wrong!";
     }
   }
 }
 ?>
-
-<!-- $UserId を持ってないとログアウトされる Functions.phpで定義 -->
-
-
-
-
 <!--  -------->
 <!-- header -->
 <!-- ------ -->
@@ -156,9 +143,10 @@ if (isset($_POST["Submit"])) {
                   Password:
                 </span>
               </label>
-              <input class="form-control" type="password" name="Password" id="Password" value="<?php if( isset($Password)) {
+              <input class="form-control" type="password" name="Password" placeholder="Password" id="Password" value="<?php if( isset($Password)) {
                 echo htmlentities($Password);
               } ?>">
+              <p class="text-white">More than 4 characters required</p>
             </div>
 
             <!-- Confirm Password -->
@@ -168,10 +156,8 @@ if (isset($_POST["Submit"])) {
                   Confirm Password:
                 </span>
               </label>
-              <input class="form-control" type="password" name="ConfirmPassword" id="ConfirmPassword" value="">
+              <input class="form-control" type="password" name="ConfirmPassword" id="ConfirmPassword" placeholder="Password confirmation" value="">
             </div>
-
-
 
             <div class="row">
               <div class="col-lg-6 mb-2">
@@ -181,6 +167,7 @@ if (isset($_POST["Submit"])) {
               </div>
               <div class="col-lg-6 mb-2">
 
+              <!-- Button -->
                 <button class="btn btn-success btn-block" type="submit" name="Submit">
                   <i class="fas fa-check"></i>Publish
                 </button>
@@ -188,31 +175,12 @@ if (isset($_POST["Submit"])) {
               </div>
             </div>
           </div>
-
         </div>
       </form>
-
-
-
-
-
-
 
     </div>
   </div>
 </section>
-
-
-
-<!-- $login->execute(array(
-      $_POST['email'],
-      sha1($_POST['password']) //暗号化されてデータベースに保存されているので、絶対に一致しない。なのでsha1()を使って一致させる。
-    )); -->
-
-
-
-
-
 <!--  -------->
 <!-- Footer -->
 <!-- ------ -->

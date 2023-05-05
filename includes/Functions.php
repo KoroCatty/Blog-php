@@ -77,16 +77,24 @@ function Login_Attempt($UserName, $Password) {
   // 結果セット内に行が存在しない場合はfalseを返す
   $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-  // DBのハッシュ化パスワードを格納
-  $stored_password = $row['password'];
+// ユーザーがDBに存在するかどうかをチェックする
+  if ($row) {
+    // ユーザーが存在する場合は、Password をhash化し、ログインチェックする
 
-  // DBのハッシュ化パスワードと、ログインに入力されたのが一致するかどうかをチェックする
-  if (password_verify($Password, $stored_password)) {
-    // パスワードが一致した場合は、そのユーザーの情報を返す
-    return $row;
-  } else {
-    // パスワードが一致しない場合は、nullを返す
-    return null;
+    // ハッシュ化されたパスワードを取得する
+    $stored_password = $row['password'];
+
+    // DBのハッシュ化パスワードを格納
+    $stored_password = $row['password'];
+
+    // DBのハッシュ化パスワードと、ログインに入力されたのが一致するかどうかをチェックする
+    if (password_verify($Password, $stored_password)) {
+      // パスワードが一致した場合は、そのユーザーの情報を返す
+      return $row;
+    } else {
+      // パスワードが一致しない場合は、nullを返す
+      return null;
+    }
   }
 }
 
