@@ -257,7 +257,6 @@ table {
   padding: 0 8px;
   display: grid;
   grid-template-columns: repeat(6, 1fr);
-  grid-template-rows: repeat(4, 1fr);
   grid-column-gap: 8px;
   grid-row-gap: 8px;
   place-items: center;
@@ -268,13 +267,20 @@ table {
   -o-object-fit: cover;
      object-fit: cover;
   border-radius: 10px;
+  overflow: hidden;
+}
+.parent img:hover {
+  overflow: hidden;
+  transform: scale(1.1);
+  transition: 0.5s all ease;
 }
 .parent .gridItem {
   position: relative;
+  overflow: hidden;
+  border-radius: 10px;
 }
 .parent .gridItem:hover {
-  filter: brightness(1.2);
-  transform: translate(0, 4px);
+  filter: brightness(0.8);
   transition: 0.5s all ease;
 }
 .parent .allPostCaption {
@@ -352,6 +358,23 @@ table {
   height: 610px;
   max-height: 610px;
   width: 320px;
+}
+
+.pagination {
+  padding: 40px 12px;
+  margin: 0;
+  margin-left: 20px;
+}
+.pagination .page-item.active {
+  border: none !important;
+}
+.pagination .page-item.active .page-link {
+  background-color: #D3AF56 !important;
+  color: white !important;
+}
+.pagination .page-item .page-link {
+  border: none;
+  color: rgb(23, 23, 23);
 }
 
 /*!
@@ -11238,6 +11261,18 @@ body {
   min-height: 500px;
 }
 
+.navbar {
+  background-color: #d3b056;
+}
+.navbar .nav-item:hover {
+  transform: translate(0, 2px);
+  filter: brightness(1.2);
+  transition: all 0.6s ease;
+}
+.navbar .nav-item .nav-link {
+  color: white;
+}
+
 .headerContainer {
   width: 100vw !important;
 }
@@ -11246,10 +11281,21 @@ body {
     display: block !important;
   }
 }
+.headerContainer .navbar-brand:hover {
+  opacity: 0.8;
+  transition: all 0.6s ease;
+  transform: translate(0, 4px);
+}
 .headerContainer .headerLogo {
   width: 40px;
   height: 40px;
   margin-right: 8px;
+}
+.headerContainer .goToAdBtn {
+  color: #015e9c !important;
+}
+.headerContainer .logoutBtn {
+  color: #a11111 !important;
 }
 
 #navbarcollapseCMS {
@@ -11273,6 +11319,17 @@ body {
   color: white;
   transition: all 0.6s ease;
   background-color: rgb(107, 107, 107);
+}
+
+.searchBtn {
+  background-color: #454545;
+  color: white;
+  border-radius: 6px;
+  box-shadow: 1px 1px 2px rgb(112, 112, 112);
+}
+.searchBtn:hover {
+  opacity: 0.8;
+  transition: all 0.3s ease;
 }
 
 .postListImg {

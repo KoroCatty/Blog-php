@@ -32,9 +32,7 @@ require_once("includes/Sessions.php");
   $defaultTitle = 'KOJIMA.Pet';
 
   $titleName = [
-    '/php/blog/index.php' => 'Home｜' . $defaultTitle,
-    '/php/blog/About.php' => 'About Us｜' . $defaultTitle,
-    '/php/blog/Blog.php' => 'Blog｜' . $defaultTitle,
+    '/php/blog/Blog.php' => 'Home｜' . $defaultTitle,
     '/php/blog/Contact.php' => 'Contact｜' . $defaultTitle,
     '/php/blog/Login.php' => 'Login｜' . $defaultTitle,
     '/php/blog/RegisterUser.php' => 'Register｜' . $defaultTitle,
@@ -67,7 +65,7 @@ require_once("includes/Sessions.php");
   <!-- Navbar -->
   <!-- ------ -->
   <header>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark">
       <div class="headerContainer container">
 
       <!-- Logo -->
@@ -85,13 +83,7 @@ require_once("includes/Sessions.php");
         <div class="collapse navbar-collapse" id="navbarcollapseCMS">
           <ul class="navbar-nav" style="gap:10px;">
             <li class="nav-item">
-              <a href="index.php" class="nav-link">Home</a>
-            </li>
-            <li class="nav-item">
-              <a href="About.php" class="nav-link">About Us</a>
-            </li>
-            <li class="nav-item">
-              <a href="Blog.php" class="nav-link">Blog</a>
+              <a href="Blog.php" class="nav-link">Home</a>
             </li>
             <li class="nav-item">
               <a href="Contact.php" class="nav-link">Contact Us</a>
@@ -108,13 +100,13 @@ require_once("includes/Sessions.php");
             <?php
             if (isset($Admin)) {
               echo '<li class="nav-item">
-                <a href="Dashboard.php" class="nav-link text-danger" target="blank">
+                <a href="Dashboard.php" class="nav-link goToAdBtn" target="blank">
                   <i class="fa-solid fa-file-export"></i>
                   Go to Admin
                 </a>
               </li>
               <li class="nav-item">
-              <a href="Logout.php" class="nav-link text-danger">
+              <a href="Logout.php" class="nav-link logoutBtn">
                   <i class="fas fa-user-times"></i> Logout</a>
               </li>
               ';
@@ -125,7 +117,7 @@ require_once("includes/Sessions.php");
               <form action="Blog.php" class="form-inline d-none d-sm-block ml-5">
                 <div class="form-group d-flex">
                   <input type="text" name="Search" placeholder="Search here" value="" class="form-control mr-2">
-                  <button class="btn btn-primary" name="SearchButton">Go</button>
+                  <button class="searchBtn" name="SearchButton">Go</button>
                 </div>
               </form>
             </li>
