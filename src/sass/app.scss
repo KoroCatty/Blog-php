@@ -1,6 +1,6 @@
-@use 'setting' as *;
-
 @use 'reset' as *;
+
+@use 'setting' as *;
 
 @use 'loading' as *;
 
@@ -160,10 +160,13 @@ body {
 
 #navbarcollapseCMS {
   justify-content: flex-end !important;
+
+  .navbar-nav {
+    align-items: center;
+  }
 }
 
 .headerLoginBtn {
-  padding-top: 8px;
 
   &:hover {
     transition: all 0.6s ease;

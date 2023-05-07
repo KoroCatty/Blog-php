@@ -7,7 +7,6 @@ require_once("includes/Functions.php");
 ?>
 
 <main class="blogContainer">
-
   <div class="blogContainerHero">
     <div class="blogContainerHero__item">
       <img src="./src/img/vertical-cat.png" alt="" class="blogContainerHero__img">
@@ -20,20 +19,15 @@ require_once("includes/Functions.php");
     </div>
   </div>
 
-
-
-
-
-
-  <!-- ------------ -->
+  <!-- ------------ ------------->
   <!-- Recent Posts -->
-  <!-- ------------ -->
+  <!-- ------------ ------------->
   <section class="recentPost">
     <h2 class="recentPost__title">Recent Posts</h2>
     <div class="recentPostContainer">
 
       <?php
-      // postsテーブルから4件取得
+      // postsテーブルから最新の4件取得
       $sql = "select * from posts ORDER BY id desc LIMIT 0, 4 ";
       $stmt = $ConnectingDB->query($sql);
 
@@ -47,7 +41,6 @@ require_once("includes/Functions.php");
         <div class="recentPostContainer__item">
           <a href="FullPost.php?id=<?php echo htmlspecialchars($Id, ENT_QUOTES); ?>">
             <img src="./Uploads/<?php echo htmlspecialchars($Image, ENT_QUOTES); ?>" alt="" class="d-block img-fluid align-self-start">
-
             <!-- postsテーブルの各記事のIDのURLに飛ぶ -->
             <div class="recentPostContainer__caption">
               <h6 class="lead"><?php echo htmlspecialchars($Title, ENT_QUOTES); ?></h6>
@@ -59,48 +52,38 @@ require_once("includes/Functions.php");
     </div>
   </section>
 
-
-
   <?php
-  // Session.phpから取得したエラーを表示する。ここでechoしとかないと、FullPost.phpで起こしたエラーが表示されない
+  // Display Error Message
   echo ErrorMessage();
   echo SuccessMessage();
   ?>
 
-
   <?php
-  // inputの name属性を取得
+  // ============================
+  // Display User searched Value 
+  // ============================
   if (isset($_GET['Search'])) {
-
     $Search = $_GET["Search"];
-    echo  "<div style='font-size:2rem; background: white; border-radius: 20px; text-align:center;'> Search result:" . ' ' .
+
+    echo "<div style='font-size:2rem; background: white; border-radius: 20px; text-align:center;'> Search result:" . ' ' .
       "<span style='font-size: 2.4rem; color:red; letter-spacing: 1px;'> $Search </span>
        </div>";
   }
   ?>
 
-
-
-
-
-
-  <!-- =========== -->
-  <!-- All POsts -->
-  <!-- =========== -->
+  <!-- ========================== -->
+  <!-- All Posts -->
+  <!-- =========== ===============-->
   <section class="allPost">
     <h2 class="recentPost__title">All Posts</h2>
-
     <div class="parent">
-
-
-      <!-- Fetch Posts From DB -->
       <?php
       // ======================================================
-      // SQL query when Search button is active (サーチボタンに入力された時のみ発動)
+      //  Search button is active  (サーチボタンに入力された時のみ発動)
       // ======================================================
       if (isset($_GET["SearchButton"])) {
 
-        // inputの name属性を取得
+        // inputの値を取得
         $Search = $_GET["Search"];
 
         // :searchはプレースホルダーで入力された値
@@ -112,14 +95,13 @@ require_once("includes/Functions.php");
           OR post LIKE :search';
         $stmt = $ConnectingDB->prepare($sql);
 
-        // bindValueでプレースホルダーに値を入れる(セキュリティのため)
-        // SQLでLIKEを使っているので、%%で囲む。少しでも一致しているものを表示するようになる
+        // SQLでLIKEを使っているので、%%で囲む。少しでも一致しているものを表示
         $stmt->bindValue(':search', '%' . $Search . '%');
 
         $stmt->execute();
 
         // ======================================================
-        // when Pagination is Active ex) Blog.php?page=1 (4記事ずつ表示する計算)
+        // Pagination is Active ex) Blog.php?page=1 (9記事ずつ表示する計算)
         // ======================================================
       } elseif (isset($_GET["page"])) {
         $Page = $_GET["page"];
@@ -130,12 +112,13 @@ require_once("includes/Functions.php");
           $ShowPostFrom = ($Page * 9) - 9;
         }
 
-        $ShowPostFrom = ($Page * 9) - 9; // 0~3, 4~7, 8~11 ... 
+        $ShowPostFrom = ($Page * 9) - 9; // 0~8, 9~17 ... 
 
         $sql = "select * from posts ORDER BY id desc LIMIT $ShowPostFrom, 9";
         $stmt = $ConnectingDB->query($sql);
+
         // =============================================================
-        // Query when Category is active in URL Tab
+        //  Category is active in URL Tab
         // ========================================================
       } elseif (isset($_GET["category"])) {
         $Category = $_GET["category"];
@@ -148,19 +131,19 @@ require_once("includes/Functions.php");
         $stmt->execute();
       }
       // ==============================================================
-      // The default SQL query (blog記事を一覧表示) (どんなURLを入力してもこれが実行)
+      // The default Page (blog記事を一覧表示) (どんなURLを入力してもこれが実行)
       // ==============================================================
       else {
         if (empty($_GET[''])) {
 
-          // 4件表示で、ページネーションあり
+          // 9件表示で、ページネーションあり
           if (0 == 0 || 9 < 1) {
             $Page = 1;
           } else {
-            $ShowPostFrom = (1 * 9) - 9;
+            $ShowPostFrom = (1 * 9) - 9; 
           }
         }
-        $ShowPostFrom = (1 * 9) - 9; // 0~3, 4~7, 8~11 ... 
+        $ShowPostFrom = (1 * 9) - 9; // 0~8, 9~17 ...
 
         $sql = "select * from posts ORDER BY id desc LIMIT $ShowPostFrom, 9";
         $stmt = $ConnectingDB->query($sql);
@@ -168,7 +151,6 @@ require_once("includes/Functions.php");
 
       // DB のpostsテーブルの各カラムをループで取得
       // fetch()はPDOオブジェクトでDBからデータを取り出した際に「配列の形式を指定できる
-      //  $DataRowsはこのwhile文内でのみ使用可能
       while ($DataRows = $stmt->fetch()) :
         $PostId = $DataRows["id"];
         $DateTime = $DataRows["datetime"];
@@ -179,33 +161,29 @@ require_once("includes/Functions.php");
         $PostDescription = $DataRows["post"];
       ?>
 
-        <!-- ------------ -->
+        <!-- ------------ ------------->
         <!-- All Posts HTML-->
-        <!-- ------------ -->
+        <!-- ------------ ------------->
         <a class="gridItem" href="FullPost.php?id=<?php echo htmlentities($PostId); ?>">
           <img src="./Uploads/<?php echo htmlentities($Image); ?>" alt="Post Image" class="blogImg card-img-top">
-
           <div class="allPostCaption">
             <h4 class="card-title"><?php echo htmlentities($PostTitle); ?></h4>
+            <p class="">Category: <?php echo htmlspecialchars($Category); ?></p>
           </div>
         </a>
       <?php endwhile; ?>
     </div>
   </section>
 
-
-
-
   <!--  --------------------------------------------->
   <!-- pagination -->
   <!-- ------------------------------------------- -->
-  <nav>
+  <section>
     <ul class="pagination pagination-lg">
 
       <!-- Backward Button -->
+      <!-- もし現在のページが、2ページ以上なら下記HTMLを表示 -->
       <?php if (isset($Page)) :
-
-        // もし現在のページが、2ページ以上なら下記HTMLを表示
         if ($Page > 1) : ?>
           <li class="page-item">
             <a href="Blog.php?page=<?php echo $Page - 1; ?>" class="page-link">&laquo;</a>
@@ -220,7 +198,7 @@ require_once("includes/Functions.php");
       $stmt = $ConnectingDB->query($sql);
       $RowPagination = $stmt->fetch();
 
-      //array_shift() は、array の最初の値を取り出して返します。配列 array は、要素一つ分だけ短くなり、全ての要素は前にずれます。 
+      //array_shift() は、array の最初の値を取り出して返す。配列は、要素一つ分だけ短くなり、全ての要素は前にずれます。 
       $TotalPosts = array_shift($RowPagination);
       // echo $TotalPosts . "<br>"; // array9 (全post数)
 
@@ -248,7 +226,6 @@ require_once("includes/Functions.php");
             <li class="page-item">
               <a href="Blog.php?page=<?php echo $i; ?>" class="page-link"><?php echo $i; ?></a>
             </li>
-
           <?php endif; ?>
         <?php endif; ?>
       <?php endfor; ?>
@@ -266,7 +243,16 @@ require_once("includes/Functions.php");
         <?php endif; ?>
       <?php endif; ?>
     </ul>
-  </nav>
+  </section>
+
+
+  <section class="catsPng">
+    <img src="./src/img/croppedCat2.png" alt="" class="catsPng__img">
+    <img src="./src/img/croppedCat1.png" alt="" class="catsPng__img">
+    <img src="./src/img/croppedCat3.png" alt="" class="catsPng__img">
+  </section>
+
+  
 
 </main>
 <?php

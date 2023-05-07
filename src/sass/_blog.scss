@@ -1,11 +1,19 @@
 @use "setting" as *;
 
 $border_color: #c49c1a;
-$accnet_color: #D3AF56;
+$accnet_color: #d3af56;
 
 .blogContainer {
   background-color: #fdf3d7;
   padding-top: 180px;
+
+  @include mq(m) {
+    padding-top: 108px;
+  }
+
+  @include mq(s) {
+    padding-top: 80px;
+  }
 
   &Hero {
     max-width: 1280px;
@@ -17,6 +25,14 @@ $accnet_color: #D3AF56;
     &__item {
       &:nth-child(2) {
         transform: translate(0, -120px);
+
+        @include mq(m) {
+          transform: translate(0, -80px);
+        }
+      
+        @include mq(s) {
+          transform: translate(0, -60px);
+        }
       }
     }
   }
@@ -28,9 +44,25 @@ $accnet_color: #D3AF56;
   max-width: 1280px;
   margin: 60px auto;
 
+  @include mq(m) {
+    margin: 28px 0;
+  }
+
+  @include mq(s) {
+    margin: 16px 0;
+  }
+
   &__title {
     text-align: center;
     margin: 40px 0;
+
+    @include mq(m) {
+      margin: 28px 0;
+    }
+  
+    @include mq(s) {
+      margin: 16px 0;
+    }
   }
 
   &Container {
@@ -38,11 +70,36 @@ $accnet_color: #D3AF56;
     justify-content: space-between;
     align-items: center;
     cursor: pointer;
+    column-gap: 8px;
+
+    @include mq(m) {
+      flex-wrap: wrap;
+      column-gap: 6px;
+      row-gap: 40px;
+    }
+  
+    @include mq(s) {
+      flex-wrap: wrap;
+      column-gap: 4px;
+      row-gap: 40px;
+    }
 
     &__item {
       width: 250px;
       height: 250px;
       border-radius: 20px;
+
+      @include mq(m) {
+        width: 46%;
+        height: 250px;
+        row-gap: 58px;
+      }
+    
+      @include mq(s) {
+        width: 47%;
+        height: 220px;
+        row-gap: 48px;
+      }
 
       &:hover {
         transition: all 0.6s ease;
@@ -72,6 +129,16 @@ $accnet_color: #D3AF56;
 // =====================
 // All Posts
 // =====================
+.allPost {
+
+@include mq(m) { 
+    margin-top: 60px;
+  }
+@include mq(s) { 
+    margin-top: 50px;
+  }
+}
+
 .parent {
   max-width: 1280px;
   margin: 0 auto;
@@ -187,17 +254,16 @@ $accnet_color: #D3AF56;
 }
 
 .pagination {
-  padding: 40px 12px;
+  padding: 40px 12px 0 12px;
   margin: 0;
   margin-left: 20px;
 
   .page-item {
-
     &.active {
       border: none !important;
 
       .page-link {
-        background-color: $accnet_color!important;
+        background-color: $accnet_color !important;
         color: white !important;
       }
     }
@@ -205,6 +271,56 @@ $accnet_color: #D3AF56;
     .page-link {
       border: none;
       color: rgb(23, 23, 23);
+    }
+  }
+}
+
+.catsPng {
+  display: flex;
+  justify-content: center;
+  column-gap: 99px;
+
+  @include mq(m) {
+    column-gap: 40px;
+  }
+
+  @include mq(s) {
+    column-gap: 20px;
+    margin-top: 40px;
+  }
+
+  &__img {
+    width: 179px;
+    height: 140px;
+
+    @include mq(m) {
+      width: 160px;
+      height: 130px;
+    }
+  
+    @include mq(s) {
+      width: 130px;
+      height: 100px;
+    }
+
+    &:nth-child(1) {
+      margin-top: 30px;
+    }
+
+    &:nth-child(2) {
+      width: 169px;
+      height: 328px;
+      margin-top: -8px;
+
+      @include mq(m) {
+        width: 140px;
+        height: 280px;
+      }
+    
+      @include mq(s) {
+        width: 120px;
+        height: 260px;
+      }
     }
   }
 }

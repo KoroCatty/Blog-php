@@ -24,26 +24,26 @@ $bg: rgb(196, 196, 196);
 
 /* Mixin---------------------------------------------- */
 
-// $w-s: 480;
-// $w-m: 785;
-// $w-l: 1080;
-// $w-xl: 1280;
+$w-s: 480;
+$w-m: 785;
+$w-l: 1080;
+$w-xl: 1280;
 
 
-// $breakpoints: (
-//   's': 'screen and (max-width:'+ $w-s +'px)',
-//   'm': 'screen and (max-width:'+ $w-m +'px)',
-//   'l': 'screen and (max-width:'+ $w-l +'px)',
-//   'xl': 'screen and (max-width:'+ $w-xl +'px)',
-// ) !default;
+$breakpoints: (
+  's': 'screen and (max-width:'+ $w-s +'px)',
+  'm': 'screen and (max-width:'+ $w-m +'px)',
+  'l': 'screen and (max-width:'+ $w-l +'px)',
+  'xl': 'screen and (max-width:'+ $w-xl +'px)',
+) !default;
 
 // Wordpress用 Mediaクエリ設定
-$breakpoints: (
-  's': 'screen and (max-width: 480px)',
-  'm': 'screen and (max-width: 481px) and (min-width: 767px)',
-  'l': 'screen and (max-width: 1080px) and (min-width: 768px)',
-  'xl': 'screen and (max-width: 1280px) and (min-width: 1080px) ',
-) !default;
+// $breakpoints: (
+//   's': 'screen and (max-width: 480px)',
+//   'm': 'screen and (max-width: 481px) and (min-width: 767px)',
+//   'l': 'screen and (max-width: 1080px) and (min-width: 768px)',
+//   'xl': 'screen and (max-width: 1280px) and (min-width: 1080px) ',
+// ) !default;
 
 @mixin mq($breakpoint: md) {
   @media #{map-get($breakpoints, $breakpoint)} {

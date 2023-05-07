@@ -8,10 +8,6 @@ require_once("includes/Functions.php");
 
 // Sessions
 require_once("includes/Sessions.php");
-
-// 自分自身のページに飛ばすものを定義し、それをセッションに格納
-// 現在のスクリプトが実行されているサーバの IP アドレスを返すもの
-// $_SESSION["TrackingURL"] = $_SERVER["PHP_SELF"];
 ?>
 
 <!DOCTYPE html>
@@ -21,9 +17,10 @@ require_once("includes/Sessions.php");
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <?php
-  // タイトルを動的に出力 ===================================
+  //===================================
+  // タイトルを動的に出力 
+  //===================================
 
   // get the current URL ex) /php/blog/Dashboard.php
   $url = $_SERVER['REQUEST_URI'];
