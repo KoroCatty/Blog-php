@@ -47,6 +47,11 @@ require_once("includes/Sessions.php");
 
   <!-- fontawesome v6 -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <!-- Google Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kalam&display=swap" rel="stylesheet">
 </head>
 
 <body>
@@ -123,7 +128,7 @@ require_once("includes/Sessions.php");
             <?php
             // when logged in
             if (empty($Admin)) {
-              echo '<li class="headerLoginBtn">
+              echo '<li class="headerLoginBtn nav-item">
               <a href="./Login.php">LOGIN</a>
             </li>';
             };

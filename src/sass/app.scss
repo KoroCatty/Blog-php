@@ -6,6 +6,7 @@
 
 @use 'blog' as *;
 
+@use 'contact' as *;
 // Import all of Bootstrap's CSS
 @import "~bootstrap/scss/bootstrap";
 
@@ -115,6 +116,12 @@ body {
   background-color: #d3b056;
 
   .nav-item {
+    @include mq(m) {
+      padding: 8px 0;
+    }
+    @include mq(s) {
+      padding: 8px 0;
+    }
 
     &:hover {
       transform: translate(0, 2px);

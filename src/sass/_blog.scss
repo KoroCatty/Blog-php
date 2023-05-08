@@ -6,6 +6,7 @@ $accnet_color: #d3af56;
 .blogContainer {
   background-color: #fdf3d7;
   padding-top: 180px;
+  font-family: 'Kalam', cursive;
 
   @include mq(m) {
     padding-top: 108px;
@@ -29,7 +30,7 @@ $accnet_color: #d3af56;
         @include mq(m) {
           transform: translate(0, -80px);
         }
-      
+
         @include mq(s) {
           transform: translate(0, -60px);
         }
@@ -42,24 +43,26 @@ $accnet_color: #d3af56;
 // =====================
 .recentPost {
   max-width: 1280px;
-  margin: 60px auto;
+  margin: -60px auto 120px auto;
 
   @include mq(m) {
-    margin: 28px 0;
+    margin-bottom: 120px;
   }
 
   @include mq(s) {
-    margin: 16px 0;
+    margin-top: 0;
+    margin-bottom: 80px;
   }
 
   &__title {
+    font-weight: 700;
     text-align: center;
     margin: 40px 0;
 
     @include mq(m) {
       margin: 28px 0;
     }
-  
+
     @include mq(s) {
       margin: 16px 0;
     }
@@ -71,13 +74,14 @@ $accnet_color: #d3af56;
     align-items: center;
     cursor: pointer;
     column-gap: 8px;
+    margin: 0 8px;
 
     @include mq(m) {
       flex-wrap: wrap;
       column-gap: 6px;
       row-gap: 40px;
     }
-  
+
     @include mq(s) {
       flex-wrap: wrap;
       column-gap: 4px;
@@ -94,7 +98,7 @@ $accnet_color: #d3af56;
         height: 250px;
         row-gap: 58px;
       }
-    
+
       @include mq(s) {
         width: 47%;
         height: 220px;
@@ -121,6 +125,11 @@ $accnet_color: #d3af56;
     &__caption {
       h6 {
         color: black;
+
+        @include mq(s) {
+font-size: 1rem;
+margin-top: 4px;
+        }
       }
     }
   }
@@ -130,11 +139,10 @@ $accnet_color: #d3af56;
 // All Posts
 // =====================
 .allPost {
-
-@include mq(m) { 
+  @include mq(m) {
     margin-top: 60px;
   }
-@include mq(s) { 
+  @include mq(s) {
     margin-top: 50px;
   }
 }
@@ -150,6 +158,18 @@ $accnet_color: #d3af56;
   grid-row-gap: 8px;
   place-items: center;
 
+  @include mq(m) {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  
+  @include mq(s) {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
   // 画像一括管理
   img {
     width: 400px;
@@ -157,6 +177,17 @@ $accnet_color: #d3af56;
     object-fit: cover;
     border-radius: 10px;
     overflow: hidden;
+
+    @include mq(m) {
+    width: 100% !important;
+    grid-area: none !important;
+    }
+    
+    @include mq(s) {
+      width: 100% !important;
+      grid-area: none !important;
+    }
+  
 
     &:hover {
       overflow: hidden;
@@ -169,6 +200,16 @@ $accnet_color: #d3af56;
     position: relative;
     overflow: hidden;
     border-radius: 10px;
+
+    @include mq(m) {
+width: 48%;
+height: 300px;
+    }
+    
+    @include mq(s) {
+      width: 48%;
+height: 260px;
+    }
 
     &:hover {
       filter: brightness(0.8);
@@ -184,6 +225,12 @@ $accnet_color: #d3af56;
     padding: 20px;
     background-color: rgba(255, 255, 255, 0.6);
     color: rgb(62, 62, 62);
+
+    @include mq(m) {
+      }
+      
+      @include mq(s) {
+      }
   }
 }
 
@@ -274,11 +321,14 @@ $accnet_color: #d3af56;
     }
   }
 }
-
+// ==================================
+// Floating cats
+// ==================================
 .catsPng {
   display: flex;
   justify-content: center;
   column-gap: 99px;
+  transform: translate(0, 47px);
 
   @include mq(m) {
     column-gap: 40px;
@@ -297,30 +347,35 @@ $accnet_color: #d3af56;
       width: 160px;
       height: 130px;
     }
-  
+
     @include mq(s) {
       width: 130px;
       height: 100px;
     }
 
     &:nth-child(1) {
-      margin-top: 30px;
+      // margin-top: 30px;
+      transform: translate(0, 30px);
     }
 
     &:nth-child(2) {
       width: 169px;
       height: 328px;
-      margin-top: -8px;
+      // margin-top: -8px;
 
       @include mq(m) {
         width: 140px;
         height: 280px;
       }
-    
+
       @include mq(s) {
         width: 120px;
         height: 260px;
       }
+    }
+
+    &:hover {
+      filter: brightness(1.1);
     }
   }
 }
