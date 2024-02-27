@@ -154,7 +154,7 @@ if (isset($_POST["Submit"])) {
                 <select name="Category" id="CategoryTitle" class="form-control">
 
                   <!-- PHPのファイル内の全体で扱うことのできる変数 global -->
-                  <?php global $ConnectingDB;
+                  <?php global $ConnectingDB; 
 
 
                   // DBから二つのカラムを取得

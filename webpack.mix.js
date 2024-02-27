@@ -17,7 +17,6 @@ mix.webpackConfig({
   },
 });
 
-
 //scssでbg-imgが表示されない時
 mix.options({
   processCssUrls: false,
