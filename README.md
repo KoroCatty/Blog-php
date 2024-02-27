@@ -9,7 +9,10 @@ This project is built using PHP. It is a simple blog website that allows users t
 ## API Reference
 
 ## Features
-- 
+- User Authentication
+- Create, Read, Update, and Delete Posts
+- User Profile
+- User Dashboard
 
 ## Prerequisites
 Before running this project, make sure you have Node.js installed on your system.
