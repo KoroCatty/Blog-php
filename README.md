@@ -1,12 +1,10 @@
 # CAT PHP BLOG
 
 <!-- Image -->
-![Anime API & Firebase Project](./cat_php.jpg)
+![CAT PHP BLOG](./cat_php.jpg)
 [Website](https://blog-php.kazu-dev.com/)
 
 This project is built using PHP. It is a simple blog website that allows users to login and then create, read, update, and delete posts operations.
-
-## API Reference
 
 ## Features
 - User Authentication
